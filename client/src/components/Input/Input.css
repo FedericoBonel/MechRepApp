@@ -1,0 +1,57 @@
+.react-datepicker {
+    font-family: inherit;
+}
+
+.container__input {
+    display: flex;
+    flex-direction: column;
+}
+
+.container__input label {
+    font-size: 16px;
+    line-height: 24px;
+    margin: 8px 0;
+}
+
+.container__input-label {
+    color: var(--color-text-dark);
+}
+
+.container__input-label_warning {
+    color: var(--color-alert);
+}
+
+.container__input input {
+    width: 100%;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 8px 16px;
+    border-radius: var(--border-radius-cards);
+    margin-bottom: 8px;
+}
+
+.container__input input:disabled {
+    border: 1px solid var(--color-border-disabled);
+}
+
+.container__input-field {
+    border: 2px solid var(--color-border-dark);
+}
+
+.container__input-field_warning {
+    border: 2px solid var(--color-alert);
+}
+
+.container__input small {
+    font-size: 14px;
+    line-height: 19px;
+    margin-bottom: 8px;
+}
+
+.container__input-hint {
+    color: var(--color-hint);
+}
+
+.container__input-hint_warning {
+    color: var(--color-alert);
+}
