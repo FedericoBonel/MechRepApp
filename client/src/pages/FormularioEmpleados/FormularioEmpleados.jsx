@@ -56,11 +56,6 @@ const touchedInitialState = {
     telefono: false,
 };
 
-const submitStatusInitialState = {
-    status: "idle",
-    response: undefined,
-};
-
 /**
  * Pagina del formulario de registro de empleados
  */
@@ -71,7 +66,6 @@ const FormularioEmpleados = () => {
 
     // Estado que mantiene seguimiento los datos subidos al formulario
     const [form, setForm] = useState(formInitialState);
-    const [submitStatus, setSubmitStatus] = useState(submitStatusInitialState);
 
     // Estado que mantiene seguimiento de que campos fueron tocados por lo menos una vez
     const [touched, setTouched] = useState(touchedInitialState);
@@ -109,27 +103,21 @@ const FormularioEmpleados = () => {
 
     // Interacciones con la API ---------------------------------------------------------------
 
-    const { mutate: createEmpleado, isLoading: empleadoIsLoading } =
-        useMutation(empleadosAPI.postEmpleado, {
-            onError: (err) => {
-                setSubmitStatus(
-                    err.response
-                        ? { status: "error", response: err.response }
-                        : {
-                              status: "error",
-                              response: { status: "500" },
-                          }
-                );
-            },
-            onSuccess: () => {
-                queryClient.invalidateQueries({
-                    queryKey: apiConstants.EMPLEADOS_CACHE,
-                });
-                setSubmitStatus({ status: "success", response: "" });
-                setForm(formInitialState);
-                setTouched(touchedInitialState);
-            },
-        });
+    const {
+        mutate: createEmpleado,
+        isSuccess: empleadoIsSuccess,
+        isLoading: empleadoIsLoading,
+        isError: empleadoIsError,
+        error: empleadoError,
+    } = useMutation(empleadosAPI.postEmpleado, {
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: apiConstants.EMPLEADOS_CACHE,
+            });
+            setForm(formInitialState);
+            setTouched(touchedInitialState);
+        },
+    });
 
     const {
         isLoading: cargoIsLoading,
@@ -139,14 +127,6 @@ const FormularioEmpleados = () => {
         isSuccess: cargoIsSuccess,
     } = useQuery(apiConstants.CARGOS_CACHE, cargosAPI.getCargos);
 
-    const {
-        isLoading: ciudadIsLoading,
-        isError: ciudadIsError,
-        error: ciudadError,
-        data: ciudades,
-        isSuccess: ciudadIsSuccess,
-    } = useQuery(apiConstants.CIUDADES_CACHE, ciudadesAPI.getCiudades);
-
     if (cargoIsError) {
         navigate(
             `${routes.PATH_ERROR}/${
@@ -154,6 +134,14 @@ const FormularioEmpleados = () => {
             }`
         );
     }
+
+    const {
+        isLoading: ciudadIsLoading,
+        isError: ciudadIsError,
+        error: ciudadError,
+        data: ciudades,
+        isSuccess: ciudadIsSuccess,
+    } = useQuery(apiConstants.CIUDADES_CACHE, ciudadesAPI.getCiudades);
 
     if (ciudadIsError) {
         navigate(
@@ -209,24 +197,23 @@ const FormularioEmpleados = () => {
     // Renderizaciones --------------------------------------------------------------------
 
     let renderedSubmitStatus = "";
-    if (submitStatus.status === "error") {
+    if (empleadoIsError) {
         if (
-            400 <= submitStatus.response?.status &&
-            submitStatus.response?.status < 500
+            400 <= empleadoError.response?.status &&
+            empleadoError.response?.status < 500
         ) {
             renderedSubmitStatus = (
                 <p className="container__form-alert">
-                    {submitStatus.response?.data.errorMsg} <br />
-                    {submitStatus.response?.data.errors &&
-                        submitStatus.response.data.errors.map(
+                    {empleadoError.response.data.errorMsg} <br />
+                    {empleadoError.response.data.errors?.map(
                             (error) => error.msg
                         )}
                 </p>
             );
         } else {
-            navigate(`${routes.PATH_ERROR}/${submitStatus.response?.status}`);
+            navigate(`${routes.PATH_ERROR}/500`);
         }
-    } else if (submitStatus.status === "success") {
+    } else if (empleadoIsSuccess) {
         renderedSubmitStatus = (
             <p className="container__form-success">
                 {messages.EMPLEADO_CREADO_EXITO}
