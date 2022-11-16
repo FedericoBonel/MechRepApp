@@ -1,0 +1,31 @@
+.container__menu-cargos {
+    padding: 23px;
+}
+
+.container__menu-cargos_card {
+    background: var(--color-menus);
+    margin: auto;
+    width: 1000px;
+    border-radius: var(--border-radius-cards);
+    padding: 18px 31px;
+    box-shadow: 0px 0px 10px var(--color-shadow);
+}
+
+.container__menu-cargos_card-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container__menu-cargos_card-top h1 {
+    font-weight: 400;
+}
+
+.container__menu-cargos_card-top a {
+    text-decoration: none;
+}
+
+.container__menu-cargos_card-top a:active {
+    filter: opacity(0.6);
+}

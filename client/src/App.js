@@ -5,7 +5,7 @@ import {
     Navigate,
 } from "react-router-dom";
 
-import { MenuEmpleados, FormularioEmpleados } from "./pages";
+import { MenuEmpleados, FormularioEmpleados, MenuCargos } from "./pages";
 import { PrivateLayout } from "./layouts";
 import { routes } from "./routes/";
 
@@ -26,7 +26,7 @@ function App() {
                     </Route>
                     <Route path={`${routes.CARGOS}`}>
                         {/* Lista de cargos */}
-                        <Route index />
+                        <Route index element={<MenuCargos />} />
                     </Route>
                 </Route>
                 {/* Errores */}

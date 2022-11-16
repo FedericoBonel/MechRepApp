@@ -1,7 +1,7 @@
 /**
  * Contiene todos los mensajes a ser enviados que se corresponden con la validacion de empleados
  */
- const MESSAGES = {
+const MESSAGES = {
     ID_PROVIDED: "Por favor no provea un ID para el nuevo empleado",
     NOMBRES_NOT_PROVIDED: "Por favor provea nombres para el empleado",
     NOMBRES_INVALID_LENGTH:
