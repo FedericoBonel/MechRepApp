@@ -109,7 +109,7 @@ const FormularioEmpleados = () => {
         isLoading: empleadoIsLoading,
         isError: empleadoIsError,
         error: empleadoError,
-    } = useMutation(empleadosAPI.postEmpleado, apiConstants.EMPLEADOS_CACHE, {
+    } = useMutation(empleadosAPI.postEmpleado, {
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: apiConstants.EMPLEADOS_CACHE,
