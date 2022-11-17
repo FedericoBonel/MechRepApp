@@ -10,7 +10,7 @@ const createEmpleado = async (req, res) => {
 
     const savedEmpleado = await empleadosService.save(empleado);
 
-    res.status(StatusCodes.OK).json(new SuccessResBody(savedEmpleado));
+    res.status(StatusCodes.CREATED).json(new SuccessResBody(savedEmpleado));
 };
 
 module.exports = { createEmpleado };
