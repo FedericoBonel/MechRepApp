@@ -109,7 +109,7 @@ const FormularioEmpleados = () => {
         isLoading: empleadoIsLoading,
         isError: empleadoIsError,
         error: empleadoError,
-    } = useMutation(empleadosAPI.postEmpleado, {
+    } = useMutation(empleadosAPI.postEmpleado, apiConstants.EMPLEADOS_CACHE, {
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: apiConstants.EMPLEADOS_CACHE,
@@ -206,8 +206,8 @@ const FormularioEmpleados = () => {
                 <p className="container__form-alert">
                     {empleadoError.response.data.errorMsg} <br />
                     {empleadoError.response.data.errors?.map(
-                            (error) => error.msg
-                        )}
+                        (error) => error.msg
+                    )}
                 </p>
             );
         } else {
