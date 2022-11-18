@@ -23,7 +23,7 @@ const getAll = async (page = 0, limit = 0) => {
  */
 const toCargoBody = (cargoModel) => {
     // Extrae la informacion de la accion que es relevante
-    const { acciones, ...cargoBody } = cargoModel;
+    const { acciones, __v, ...cargoBody } = cargoModel;
 
     cargoBody.acciones = acciones.map((accion) => ({
         _id: accion._id,

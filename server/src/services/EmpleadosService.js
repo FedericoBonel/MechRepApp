@@ -64,7 +64,7 @@ const save = async (empleado) => {
  */
 const toEmpleadoBody = (empleadoModel) => {
     // Remove la clave y saca la informacion importante del cargo
-    const { password, ...empleadoBody } = empleadoModel;
+    const { password, __v, ...empleadoBody } = empleadoModel;
     empleadoBody.cargo = empleadoModel.cargo.nombre;
 
     return empleadoBody;
