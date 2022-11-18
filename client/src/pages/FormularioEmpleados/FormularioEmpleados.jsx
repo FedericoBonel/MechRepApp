@@ -1,21 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import "./FormularioEmpleados.css";
 import { messages } from "../../assets/messages/";
-
 import { empleadosValidator, constantsValidator } from "../../utils/validators";
 import { routes } from "../../routes/";
 import ciudadesAPI from "../../api/CiudadesAPI";
 import cargosAPI from "../../api/CargosAPI";
 import empleadosAPI from "../../api/EmpleadosAPI";
-
 import apiConstants from "../../api/Constants";
-
 import { Input, Select } from "../../components";
 
 const PAIS = process.env.PAIS_VALIDO || "Argentina";
