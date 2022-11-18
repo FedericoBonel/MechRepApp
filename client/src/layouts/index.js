@@ -1,3 +1,5 @@
-import PrivateLayout from "./PrivateLayout";
+/**
+ * Indice para facilitar importaciones desde otros paquetes
+ */
 
-export { PrivateLayout };
+export { default as PrivateLayout } from "./PrivateLayout";
