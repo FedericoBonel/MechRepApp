@@ -12,7 +12,7 @@ const empleadosInstanceAPI = axios.create({
 
 /**
  * Crea un empleado en el back end
- * @param {*} newEmpleado
+ * @param {*} newEmpleado Nuevo empleado con todos sus campos
  * @returns La respuesta del servidor con el nuevo empleado
  */
 const postEmpleado = async (newEmpleado) => {
