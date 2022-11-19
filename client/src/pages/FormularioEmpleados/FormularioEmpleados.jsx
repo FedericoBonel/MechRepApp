@@ -185,7 +185,6 @@ const FormularioEmpleados = () => {
             },
             cargo: form.cargo,
             password: form.password,
-            passwordConfirmar: form.passwordConfirmar,
             telefono: form.telefono,
         });
     };
@@ -201,9 +200,12 @@ const FormularioEmpleados = () => {
             renderedSubmitStatus = (
                 <p className="container__form-alert">
                     {empleadoError.response.data.errorMsg} <br />
-                    {empleadoError.response.data.errors?.map(
-                        (error) => error.msg
-                    )}
+                    {empleadoError.response.data.errors?.map((error) => (
+                        <>
+                            {error.msg}
+                            <br />
+                        </>
+                    ))}
                 </p>
             );
         } else {

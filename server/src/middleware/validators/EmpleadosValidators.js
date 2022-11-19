@@ -25,8 +25,7 @@ const newEmpleadoBodyValidator = [
             min: validationValues.NOMBRES_MIN_LENGTH,
             max: validationValues.NOMBRES_MAX_LENGTH,
         })
-        .withMessage(validationMsgs.NOMBRES_INVALID_LENGTH)
-        .toLowerCase(),
+        .withMessage(validationMsgs.NOMBRES_INVALID_LENGTH),
     expressValidator
         .body("apellidos")
         .isString()
@@ -35,8 +34,7 @@ const newEmpleadoBodyValidator = [
             min: validationValues.APELLIDOS_MIN_LENGTH,
             max: validationValues.APELLIDOS_MAX_LENGTH,
         })
-        .withMessage(validationMsgs.APELLIDOS_INVALID_LENGTH)
-        .toLowerCase(),
+        .withMessage(validationMsgs.APELLIDOS_INVALID_LENGTH),
     expressValidator
         .body("email")
         .isEmail()
