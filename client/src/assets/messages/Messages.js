@@ -17,7 +17,7 @@ export const MENU_CARGOS_FECHA_CREACION = "Fecha de Creación: ";
 export const MENU_CARGOS_CARGANDO = "Cargando los Cargos disponibles... ";
 export const MENU_CARGOS_NO_CARGOS = "No hay cargos que mostrar... ";
 
-// Formulario nuevo empleado ----------------------------------------------------------
+// Formulario empleados ----------------------------------------------------------
 export const NEW_EMPLEADO = "Nuevo Empleado";
 export const REGISTRAR_EMPLEADO = "Registrar empleado";
 export const NOMBRES = "Nombres";
