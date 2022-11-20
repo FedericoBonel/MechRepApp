@@ -1,0 +1,39 @@
+.container__single-cargo hr {
+    border: none;
+    height: 2px;
+    background-color: var(--color-text-dark);
+    margin: 17px 0;
+}
+
+.container__single-cargo h2 {
+    font-weight: 400;
+    font-size: 20px;
+    margin: 16px 0;
+}
+
+.container__single-cargo p {
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.container__single-cargo_desc {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.container__single-cargo_acciones {
+    display: flex;
+    flex-direction: row;
+}
+
+.container__single-cargo_acciones-name {
+    margin-right: 16px;
+}
+
+.container__single-cargo_acciones-verb {
+    font-size: 16px;
+    margin: 0 0 8px 16px;
+}

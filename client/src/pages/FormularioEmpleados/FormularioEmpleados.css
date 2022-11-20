@@ -1,0 +1,48 @@
+.container__form-empleados {
+    padding: 23px;
+}
+
+.container__form-empleados a {
+    text-decoration: none;
+}
+
+.container__form-empleados_card {
+    background: var(--color-menus);
+    width: 524px;
+    margin: auto;
+    border-radius: var(--border-radius-cards);
+    padding: 18px 31px;
+    box-shadow: 0px 0px 10px var(--color-shadow);
+}
+
+.container__form-empleados_card h1 {
+    font-weight: 400;
+    font-size: 38px;
+    margin-bottom: 16px;
+}
+
+.container__form-empleados_card-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container__form-empleados_card-row_calle {
+    flex: 2;
+    margin-right: 26px;
+}
+
+.container__form-empleados_card-row_altura {
+    flex: 1;
+}
+
+.container__form-empleados_card-btns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.container__form-empleados_card-btns button {
+    margin-left: 16px;
+}

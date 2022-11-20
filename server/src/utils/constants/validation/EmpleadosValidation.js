@@ -1,7 +1,7 @@
 /**
  * Contiene todos los valores para realizar las validaciones de los campos recibidos correspondientes a empleados
  */
- const VALORES = {
+const VALORES = {
     NOMBRES_MIN_LENGTH: 3,
     NOMBRES_MAX_LENGTH: 50,
     APELLIDOS_MIN_LENGTH: 3,
