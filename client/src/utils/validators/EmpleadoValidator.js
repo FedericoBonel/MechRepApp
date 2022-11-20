@@ -13,7 +13,7 @@ import * as constants from "./Constants";
 export const isFechaNacimiento = (date) => {
     const validDateMax = new Date();
     validDateMax.setFullYear(
-        validDateMax.getFullYear() - constants.VALORES.MIN_VALUE_YEARS_BIRTHDATE
+        validDateMax.getFullYear() - constants.VALORES.EMPL_MIN_VALUE_YEARS_BIRTHDATE
     );
 
     let validatedDate;
@@ -32,8 +32,8 @@ export const isFechaNacimiento = (date) => {
  */
 export const isNombres = (nombres) => {
     return (
-        constants.VALORES.MIN_LENGTH_NOMBRES <= nombres.length &&
-        nombres.length <= constants.VALORES.MAX_LENGTH_NOMBRES
+        constants.VALORES.EMPL_MIN_LENGTH_NOMBRES <= nombres.length &&
+        nombres.length <= constants.VALORES.EMPL_MAX_LENGTH_NOMBRES
     );
 };
 
@@ -44,8 +44,8 @@ export const isNombres = (nombres) => {
  */
 export const isApellidos = (apellidos) => {
     return (
-        constants.VALORES.MIN_LENGTH_APELLIDOS <= apellidos.length &&
-        apellidos.length <= constants.VALORES.MAX_LENGTH_APELLIDOS
+        constants.VALORES.EMPL_MIN_LENGTH_APELLIDOS <= apellidos.length &&
+        apellidos.length <= constants.VALORES.EMPL_MAX_LENGTH_APELLIDOS
     );
 };
 
@@ -56,8 +56,8 @@ export const isApellidos = (apellidos) => {
  */
 export const isEmail = (email) => {
     return (
-        constants.VALORES.MIN_LENGTH_EMAIL <= email.length &&
-        email.length <= constants.VALORES.MAX_LENGTH_EMAIL &&
+        constants.VALORES.EMPL_MIN_LENGTH_EMAIL <= email.length &&
+        email.length <= constants.VALORES.EMPL_MAX_LENGTH_EMAIL &&
         email.match(constants.EMAIL_REGEX)
     );
 };
@@ -69,7 +69,7 @@ export const isEmail = (email) => {
  */
 export const isTelefono = (telefono) => {
     return (
-        telefono.length === constants.VALORES.LENGTH_TELEFONO &&
+        telefono.length === constants.VALORES.EMPL_LENGTH_TELEFONO &&
         telefono.match(constants.TELEFONO_REGEX)
     );
 };
@@ -81,8 +81,8 @@ export const isTelefono = (telefono) => {
  */
 export const isPassword = (password) => {
     return (
-        constants.VALORES.MIN_LENGTH_PASSWORD <= password.length &&
-        password.length <= constants.VALORES.MAX_LENGTH_PASSWORD
+        constants.VALORES.EMPL_MIN_LENGTH_PASSWORD <= password.length &&
+        password.length <= constants.VALORES.EMPL_MAX_LENGTH_PASSWORD
     );
 };
 
@@ -93,8 +93,8 @@ export const isPassword = (password) => {
  */
 export const isCalle = (calle) => {
     return (
-        constants.VALORES.MIN_LENGTH_CALLE <= calle.length &&
-        calle.length <= constants.VALORES.MAX_LENGTH_CALLE
+        constants.VALORES.EMPL_MIN_LENGTH_CALLE <= calle.length &&
+        calle.length <= constants.VALORES.EMPL_MAX_LENGTH_CALLE
     );
 };
 
@@ -105,7 +105,7 @@ export const isCalle = (calle) => {
  */
 export const isNumero = (numero) => {
     return (
-        constants.VALORES.MIN_VALUE_NUMERO <= numero &&
-        numero <= constants.VALORES.MAX_VALUE_NUMERO
+        constants.VALORES.EMPL_MIN_VALUE_NUMERO <= numero &&
+        numero <= constants.VALORES.EMPL_MAX_VALUE_NUMERO
     );
 };

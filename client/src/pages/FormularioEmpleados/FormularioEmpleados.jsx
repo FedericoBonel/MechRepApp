@@ -21,7 +21,7 @@ const PAIS = process.env.PAIS_VALIDO || "Argentina";
 const limitFechaNacimiento = new Date();
 limitFechaNacimiento.setFullYear(
     new Date().getFullYear() -
-        constantsValidator.VALORES.MIN_VALUE_YEARS_BIRTHDATE
+        constantsValidator.VALORES.EMPL_MIN_VALUE_YEARS_BIRTHDATE
 );
 
 const formInitialState = {
@@ -229,8 +229,8 @@ const FormularioEmpleados = () => {
                 setValue={onChange}
                 label={messages.NOMBRES}
                 name="nombres"
-                minlength={constantsValidator.VALORES.MIN_LENGTH_NOMBRES}
-                maxlength={constantsValidator.VALORES.MAX_LENGTH_NOMBRES}
+                minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_NOMBRES}
+                maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_NOMBRES}
                 hint={messages.HINT_NOMBRES}
                 value={form.nombres}
                 onBlur={onBlur}
@@ -243,8 +243,8 @@ const FormularioEmpleados = () => {
                 setValue={onChange}
                 label={messages.APELLIDOS}
                 name="apellidos"
-                minlength={constantsValidator.VALORES.MIN_LENGTH_APELLIDOS}
-                maxlength={constantsValidator.VALORES.MAX_LENGTH_APELLIDOS}
+                minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_APELLIDOS}
+                maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_APELLIDOS}
                 hint={messages.HINT_APELLIDOS}
                 value={form.apellidos}
                 onBlur={onBlur}
@@ -273,8 +273,8 @@ const FormularioEmpleados = () => {
                 setValue={onChange}
                 label={messages.EMAIL}
                 name="email"
-                minlength={constantsValidator.VALORES.MIN_LENGTH_EMAIL}
-                maxlength={constantsValidator.VALORES.MAX_LENGTH_EMAIL}
+                minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_EMAIL}
+                maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_EMAIL}
                 hint={messages.HINT_EMAIL}
                 type={"email"}
                 value={form.email}
@@ -288,8 +288,8 @@ const FormularioEmpleados = () => {
                 setValue={onChange}
                 label={messages.TELEFONO}
                 name="telefono"
-                minlength={constantsValidator.VALORES.LENGTH_TELEFONO}
-                maxlength={constantsValidator.VALORES.LENGTH_TELEFONO}
+                minlength={constantsValidator.VALORES.EMPL_LENGTH_TELEFONO}
+                maxlength={constantsValidator.VALORES.EMPL_LENGTH_TELEFONO}
                 hint={messages.HINT_TELEFONO}
                 type={"tel"}
                 value={form.telefono}
@@ -327,8 +327,8 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.CALLE}
                     name="calle"
-                    minlength={constantsValidator.VALORES.MIN_LENGTH_CALLE}
-                    maxlength={constantsValidator.VALORES.MAX_LENGTH_CALLE}
+                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_CALLE}
+                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_CALLE}
                     type={"text"}
                     hint={messages.HINT_CALLE}
                     value={form.calle}
@@ -342,8 +342,8 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.ALTURA}
                     name="numero"
-                    min={constantsValidator.VALORES.MIN_VALUE_NUMERO}
-                    max={constantsValidator.VALORES.MAX_VALUE_NUMERO}
+                    min={constantsValidator.VALORES.EMPL_MIN_VALUE_NUMERO}
+                    max={constantsValidator.VALORES.EMPL_MAX_VALUE_NUMERO}
                     type={"number"}
                     hint={messages.HINT_ALTURA}
                     value={form.numero}
@@ -373,8 +373,8 @@ const FormularioEmpleados = () => {
                 setValue={onChange}
                 label={messages.CLAVE}
                 name="password"
-                minlength={constantsValidator.VALORES.MIN_LENGTH_PASSWORD}
-                maxlength={constantsValidator.VALORES.MAX_LENGTH_PASSWORD}
+                minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD}
+                maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD}
                 hint={messages.HINT_CLAVE}
                 type={"password"}
                 value={form.password}
@@ -388,8 +388,8 @@ const FormularioEmpleados = () => {
                 setValue={onChange}
                 label={messages.CONFIRMAR_CLAVE}
                 name="passwordConfirmar"
-                minlength={constantsValidator.VALORES.MIN_LENGTH_PASSWORD}
-                maxlength={constantsValidator.VALORES.MAX_LENGTH_PASSWORD}
+                minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD}
+                maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD}
                 hint={messages.HINT_CONFIRMARCLAVE}
                 type={"password"}
                 value={form.passwordConfirmar}
