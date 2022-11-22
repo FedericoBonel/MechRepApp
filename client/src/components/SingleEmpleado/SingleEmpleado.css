@@ -1,0 +1,87 @@
+.container__single-empleado hr {
+    border: none;
+    height: 2px;
+    background-color: var(--color-text-dark);
+    margin: 17px 0;
+}
+
+.container__single-empleado_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 17px 0;
+}
+
+.container__single-empleado_header div {
+    display: inherit;
+    align-items: inherit;
+}
+
+.container__single-empleado_header div > span {
+    margin: 0 12px;
+}
+
+.container__single-empleado_header-nombre {
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.container__single-empleado_header-cargo {
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--color-hint);
+}
+
+.container__single-empleado_info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid var(--color-text-dark);
+    border-radius: var(--border-radius-cards);
+    padding: 16px;
+}
+
+.container__single-empleado_info-left {
+    flex: 2;
+}
+
+.container__single-empleado_info-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.container__single-empleado_info-row aside {
+    flex: 1;
+    text-align: end;
+    margin-right: 32px;
+}
+
+.container__single-empleado_info-row_data {
+    flex: 2;
+}
+
+.container__single-empleado a {
+    color: var(--color-button);
+}
+
+.container__single-empleado_info-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.container__single-empleado_info-right > p {
+    font-weight: 700;
+}
+
+.container__single-empleado_info-contratado_true {
+    color: var(--color-confirmation);
+}
+
+.container__single-empleado_info-contratado_false {
+    color: var(--color-alert);
+}

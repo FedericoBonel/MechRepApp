@@ -11,11 +11,30 @@
     box-shadow: 0px 0px 10px var(--color-shadow);
 }
 
+.container__menu-empleados_card-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 16px;
+    padding: 16px 24px 16px 24px;
+    border: 2px solid var(--color-text-dark);
+    border-radius: var(--border-radius-cards);
+}
+
+.container__menu-empleados_card-menu_select {
+    margin-left: 24px;
+}
+
 .container__menu-empleados_card-top {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+.container__menu-empleados_card-top div {
+    display: inherit;
+    align-items: inherit;
 }
 
 .container__menu-empleados_card-top h1 {
@@ -28,4 +47,17 @@
 
 .container__menu-empleados_card-top a:active {
     filter: opacity(0.6);
+}
+
+.container__menu-empleados_card-top_filter {
+    border: none;
+    background-color: transparent;
+    color: var(--color-button);
+    margin-left: 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.container__menu-empleados_card-top_filter:active {
+    filter: opacity(0.5);
 }
