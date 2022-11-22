@@ -15,6 +15,7 @@
     --color-border-disabled: gray;
     --color-shadow: gray;
     --color-hint: #808080;
+    --color-confirmation: #009301;
     --border-radius-buttons: 4px;
     --border-radius-cards: 8px;
 }
@@ -101,6 +102,22 @@ code {
     filter: opacity(0.6);
 }
 
+.container__button-load_more {
+    font-size: 16px;
+    color: var(--color-button);
+    border-radius: var(--border-radius-buttons);
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 16px 0;
+    margin: auto;
+    display: block;
+}
+
+.container__button-load_more:active {
+    filter: opacity(0.6);
+}
+
 /* Estilos de los mensajes de los formularios */
 
 .container__form-alert {
@@ -119,9 +136,6 @@ code {
 /* Estilos de mensajes de carga */
 
 .container__loading-msg {
-    text-align: center;
-}
-
-.container__loading-msg p {
     margin: 16px;
+    text-align: center;
 }

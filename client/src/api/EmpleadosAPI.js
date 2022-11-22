@@ -11,6 +11,20 @@ const empleadosInstanceAPI = axios.create({
 });
 
 /**
+ * Busca todos los empleados desde el back end
+ * @param cargo Parametro opcional, de ser proporcionado filtra la lista por el cargo
+ * @param page Parametro opcional, de ser proporcionado se traera solo una pagina especifica de todos los empleados
+ * @param limit Parametro opcional, de ser proporcionado se traera solo esta cantidad especfica de empleados desde la base de datos
+ * @returns La respuesta del servidor con todos los empleados
+ */
+const getEmpleados = async (cargo = "", page = 1, limit = 10) => {
+    const config = { params: { cargo, page, limit } };
+
+    const response = await empleadosInstanceAPI.get("/", config);
+    return await response.data;
+};
+
+/**
  * Crea un empleado en el back end
  * @param {*} newEmpleado Nuevo empleado con todos sus campos
  * @returns La respuesta del servidor con el nuevo empleado
@@ -20,6 +34,7 @@ const postEmpleado = async (newEmpleado) => {
 };
 
 const empleadosAPI = {
+    getEmpleados,
     postEmpleado,
 };
 

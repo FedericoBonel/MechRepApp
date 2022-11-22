@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery, useInfiniteQuery, useQueryClient } from "react-query";
+import { useQuery, useInfiniteQuery } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faSpinner,
@@ -21,7 +21,6 @@ import { routes } from "../../routes/";
  */
 const MenuEmpleados = () => {
     const navigate = useNavigate();
-    const queryClient = useQueryClient();
     // Estados ---------------------------------------------------------------
     const [showFilterMenu, setShowFilterMenu] = useState(false);
     const [filterCargoSelected, setFilterCargoSelected] = useState("");
