@@ -13,4 +13,18 @@ const createEmpleado = async (req, res) => {
     res.status(StatusCodes.CREATED).json(new SuccessResBody(savedEmpleado));
 };
 
-module.exports = { createEmpleado };
+/** Controlador que maneja los requests que piden una lista de todos los empleados */
+const getEmpleados = async (req, res) => {
+    const { page, limit, cargo } = req.query;
+
+    let empleados;
+    if (cargo) {
+        empleados = await empleadosService.getByCargo(cargo, page, limit);
+    } else {
+        empleados = await empleadosService.getAll(page, limit);
+    }
+
+    res.status(StatusCodes.OK).json(new SuccessResBody(empleados));
+};
+
+module.exports = { createEmpleado, getEmpleados };

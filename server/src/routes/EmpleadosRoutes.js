@@ -10,6 +10,7 @@ const empleadosRouter = express.Router();
 // Empleados -------------------------------------------------------
 empleadosRouter
     .route("/")
+    .get(empleadosController.getEmpleados)
     .post(
         empleadosValidator.newEmpleadoBodyValidator,
         empleadosController.createEmpleado

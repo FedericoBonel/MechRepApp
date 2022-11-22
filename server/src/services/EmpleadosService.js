@@ -58,6 +58,48 @@ const save = async (empleado) => {
 };
 
 /**
+ * Consigue una lista de todos los empleados del sistema
+ * @param {Number} page Numero de la pagina de documentos que desean conseguirse, de ser 0 retorna todos los empleados
+ * @param {Number} limit Cantidad de documentos a mostrar por pagina, de ser 0 retorna todos los empleados
+ * @returns Lista de todos los empleados registrados para la pagina y limites establecidos
+ */
+const getAll = async (page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+
+    const empleados = await empleadosRepositorio.getAll(skip, limit);
+
+    // Extrae la informacion publica de cada empleado
+    return empleados.map((empleado) => toEmpleadoBody(empleado));
+};
+
+/**
+ * Consigue una lista de todos los empleados del sistema por cargo
+ * @param {String} cargo Nombre del cargo del cual se desea conseguir los empleados
+ * @param {Number} page Numero de la pagina de documentos que desean conseguirse, de ser 0 retorna todos los empleados con el cargo proveido
+ * @param {Number} limit Cantidad de documentos a mostrar por pagina, de ser 0 retorna todos los empleados con el cargo proveido
+ * @throws {NotFoundError} Si el cargo no existe en la base de datos
+ * @returns Lista de todos los empleados registrados para la pagina y limites establecidos
+ */
+const getByCargo = async (cargo, page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+
+    // Verifica si existe el cargo proveido y de ser asi obten su id
+    const foundCargo = await cargosRepositorio.getByNombre(cargo);
+    if (!foundCargo) {
+        throw new NotFoundError(`${validatorMsgs.CARGO_NOT_VALID}${cargo}`);
+    }
+
+    const empleados = await empleadosRepositorio.getByCargo(
+        foundCargo._id,
+        skip,
+        limit
+    );
+
+    // Extrae la informacion publica de cada empleado
+    return empleados.map((empleado) => toEmpleadoBody(empleado));
+};
+
+/**
  * Extrae la informacion publica del empleado que sera expuesta a la web
  * @param {*} empleadoModel empleado tal y como se persiste en la base de datos
  * @returns empleado tal y como deberia ser expuesto a los usuarios de la API
@@ -70,4 +112,4 @@ const toEmpleadoBody = (empleadoModel) => {
     return empleadoBody;
 };
 
-module.exports = { save };
+module.exports = { save, getAll, getByCargo };
