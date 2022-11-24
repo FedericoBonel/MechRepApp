@@ -9,6 +9,7 @@ const MESSAGES = {
     PAIS_NOT_FOUND: "El pais proveido no existe en la base de datos: ",
     // Empleados
     EMPLEADOS_EMAIL_IN_USE: "Ya existe un empleado registrado con el email: ",
+    EMPLEADOS_NOT_FOUND: "El empleado proveido no existe en la base de datos: ",
 };
 
 module.exports = MESSAGES;

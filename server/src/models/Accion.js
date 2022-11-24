@@ -1,7 +1,7 @@
 // Importaciones
 const mongoose = require("mongoose");
 
-const validationValues = require("../utils/constants/validation/EmpleadosValidation");
+const validationValues = require("../utils/constants/validation/PersonasValidation");
 
 // Definicion de constantes
 const NOMBRE_MODELO = "Accion";

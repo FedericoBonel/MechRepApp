@@ -2,8 +2,8 @@
 const mongoose = require("mongoose");
 const { NOMBRE_MODELO: ACCION_NOMBRE } = require("./Accion");
 
-const validationValues = require("../utils/constants/validation/EmpleadosValidation");
-const validationMsgs = require("../utils/constants/messages/EmpleadosValidation");
+const validationValues = require("../utils/constants/validation/PersonasValidation");
+const validationMsgs = require("../utils/constants/messages/PersonasValidation");
 
 // Definicion de constantes
 const NOMBRE_MODELO = "Cargo";

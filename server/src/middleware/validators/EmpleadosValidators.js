@@ -2,8 +2,8 @@
 const expressValidator = require("express-validator");
 
 const checkValidator = require("./CheckValidation");
-const validationValues = require("../../utils/constants/validation/EmpleadosValidation");
-const validationMsgs = require("../../utils/constants/messages/EmpleadosValidation");
+const validationValues = require("../../utils/constants/validation/PersonasValidation");
+const validationMsgs = require("../../utils/constants/messages/PersonasValidation");
 
 // Definicion de constantes
 const PAIS_VALIDO = process.env.PAIS_VALIDO || "Argentina";

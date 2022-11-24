@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 /**
  * Funcion que inicializa la conexion con la base de datos
@@ -7,6 +7,6 @@ const mongoose = require('mongoose');
  */
 const connectToDB = async (uri) => {
     return mongoose.connect(uri);
-}
+};
 
 module.exports = connectToDB;
