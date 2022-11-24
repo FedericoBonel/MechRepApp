@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const cargosRepositorio = require("../repositories/CargosRepository");
 const empleadosRepositorio = require("../repositories/EmpleadosRepository");
 const ciudadRepository = require("../repositories/CiudadRepository");
+const reporteMecanicosRepository = require("../repositories/ReporteMecanicosRepository");
 
 const validatorMsgs = require("../utils/constants/messages/ServiceErrors");
 
@@ -100,6 +101,39 @@ const getByCargo = async (cargo, page = 1, limit = 10) => {
 };
 
 /**
+ * Elimina a un empleado por id o,
+ * si el empleado posee reportes mecanicos con referencias a el, lo actualiza como no contratado
+ * @param {String} idEmpleado Id del empleado a eliminar
+ * @throws {NotFoundError} Si el empleado con ese id no se encuentra en la base de datos
+ * @returns Empleado actualizado de haber participado en reportes mecanicos, undefined en caso contrario
+ */
+const deleteById = async (idEmpleado) => {
+    // Busca si el empleado tiene reportes mecanicos, de ser asi actualizalo
+    // como no contratado si no eliminalo
+    const foundReportes = await reporteMecanicosRepository.getAllByEmpleado(
+        idEmpleado
+    );
+
+    if (foundReportes.length) {
+        const empleado = await empleadosRepositorio.updateById(idEmpleado, {
+            contratado: false,
+        });
+
+        return toEmpleadoBody(empleado);
+    }
+
+    const deletedEmpleado = await empleadosRepositorio.deleteById(idEmpleado);
+
+    if (!deletedEmpleado) {
+        throw new NotFoundError(
+            `${validatorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
+        );
+    }
+
+    return undefined;
+};
+
+/**
  * Extrae la informacion publica del empleado que sera expuesta a la web
  * @param {*} empleadoModel empleado tal y como se persiste en la base de datos
  * @returns empleado tal y como deberia ser expuesto a los usuarios de la API
@@ -112,4 +146,4 @@ const toEmpleadoBody = (empleadoModel) => {
     return empleadoBody;
 };
 
-module.exports = { save, getAll, getByCargo };
+module.exports = { save, getAll, getByCargo, deleteById };

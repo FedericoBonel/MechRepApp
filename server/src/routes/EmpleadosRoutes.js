@@ -16,4 +16,9 @@ empleadosRouter
         empleadosController.createEmpleado
     );
 
+// Empleado por Id -------------------------------------------------
+empleadosRouter
+    .route("/:idEmpleado")
+    .delete(empleadosController.deleteEmpleado);
+
 module.exports = empleadosRouter;

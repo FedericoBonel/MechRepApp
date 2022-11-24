@@ -52,4 +52,36 @@ const save = async (empleado) => {
     return (await empleadoModel.create(empleado)).toObject();
 };
 
-module.exports = { getByEmail, save, getAll, getByCargo };
+/**
+ * Elimina un empleado por id y lo devuelve
+ * @note Esta funcion no elimina los posibles reportes donde 
+ *       el empleado podria estar involucrado
+ * @param {String} idEmpleado Id del empleado a ser eliminado
+ * @returns Empleado eliminado
+ */
+const deleteById = async (idEmpleado) => {
+    return await empleadoModel.findByIdAndDelete(idEmpleado).lean();
+};
+
+/**
+ * Actualiza un empleado por id y lo devuelve
+ * @param {String} idEmpleado Id del empleado a actualizar
+ * @param {*} updates Nuevos campos y valores a ser asignados al empleado
+ * @returns Empleado actualizado
+ */
+const updateById = async (idEmpleado, updates) => {
+    return await empleadoModel
+        .findByIdAndUpdate(idEmpleado, updates, {
+            new: true,
+        })
+        .lean();
+};
+
+module.exports = {
+    getByEmail,
+    save,
+    getAll,
+    getByCargo,
+    deleteById,
+    updateById,
+};
