@@ -33,9 +33,21 @@ const postEmpleado = async (newEmpleado) => {
     return await empleadosInstanceAPI.post("/", newEmpleado);
 };
 
+/**
+ * Elimina un empleado desde el back end
+ * @param {String} idEmpleado Identificador del empleado a eliminar
+ * @returns Undefined si el empleado fue eliminado correctamente o
+ *          el empleado actualizado como no contratado en caso de que haya participado en reportes mecanicos
+ */
+const deleteEmpleado = async (idEmpleado) => {
+    const deletedRes = await empleadosInstanceAPI.delete(`/${idEmpleado}`);
+    return deletedRes.data;
+};
+
 const empleadosAPI = {
     getEmpleados,
     postEmpleado,
+    deleteEmpleado,
 };
 
 export default empleadosAPI;

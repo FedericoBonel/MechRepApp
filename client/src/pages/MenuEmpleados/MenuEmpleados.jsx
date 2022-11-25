@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { useQuery, useInfiniteQuery } from "react-query";
+import {
+    useQuery,
+    useInfiniteQuery,
+    useMutation,
+    useQueryClient,
+} from "react-query";
+import { ToastContainer, toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faSpinner,
@@ -21,6 +27,7 @@ import { routes } from "../../routes/";
  */
 const MenuEmpleados = () => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     // Estados ---------------------------------------------------------------
     const [showFilterMenu, setShowFilterMenu] = useState(false);
     const [filterCargoSelected, setFilterCargoSelected] = useState("");
@@ -55,6 +62,32 @@ const MenuEmpleados = () => {
     }
 
     const {
+        mutate: deleteEmpleado,
+        error: empleadoDelError,
+        isError: empleadoDelIsError,
+    } = useMutation(empleadosApi.deleteEmpleado, {
+        onSuccess: (empleadoActualizado) => {
+            queryClient.invalidateQueries(apiConstants.EMPLEADOS_CACHE);
+
+            if (empleadoActualizado.data) {
+                toast.warning(messages.MENU_EMPLEADOS_NO_PUDO_BORRAR_EMPLEADO, {
+                    position: "top-center",
+                });
+            }
+        },
+    });
+
+    if (empleadoDelIsError) {
+        navigate(
+            `${routes.PATH_ERROR}/${
+                empleadoDelError.response
+                    ? empleadoDelError.response.status
+                    : "500"
+            }`
+        );
+    }
+
+    const {
         isLoading: cargoIsLoading,
         isError: cargoIsError,
         error: cargoError,
@@ -81,7 +114,11 @@ const MenuEmpleados = () => {
         if (empleados.pages.length) {
             renderedEmpleados = empleados.pages.map((grupo) =>
                 grupo.data.map((empleado) => (
-                    <SingleEmpleado key={empleado._id} empleado={empleado} />
+                    <SingleEmpleado
+                        key={empleado._id}
+                        empleado={empleado}
+                        onDelete={() => deleteEmpleado(empleado._id)}
+                    />
                 ))
             );
         }
@@ -125,7 +162,7 @@ const MenuEmpleados = () => {
             // Adjunta la opcion de reseteo de seleccion
             cargosOptions.push("");
             renderedFilterMenu = (
-                <div className="container__menu-empleados_card-menu">
+                <div className="container__menu-empleados_card-menu swing-in">
                     <p>{messages.MENU_EMPLEADOS_FILTRAR_CARGO}</p>
                     <Select
                         className="container__menu-empleados_card-menu_select"
@@ -188,6 +225,7 @@ const MenuEmpleados = () => {
                 </div>
                 {renderedLoadMoreBtn}
             </div>
+            <ToastContainer className="toast__container" />
         </main>
     );
 };

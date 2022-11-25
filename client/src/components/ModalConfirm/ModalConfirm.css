@@ -1,0 +1,40 @@
+.container__modal {
+    width: 400px;
+    min-height: 200px;
+    padding: 32px;
+    background: var(--color-menus);
+    border-radius: var(--border-radius-cards);
+    margin: 10% auto;
+}
+
+.container__modal h2 {
+    font-weight: 400;
+    font-size: 28px;
+}
+
+.container__modal p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    white-space: pre-wrap;
+}
+
+.container__modal-btn_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.container__modal-btn_row button {
+    margin: 16px 0 0 16px;
+}
+
+.container__overlay {
+    background-color: var(--color-overlay-dark);
+    position: absolute;
+    z-index: 11;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}

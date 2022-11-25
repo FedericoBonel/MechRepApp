@@ -55,8 +55,6 @@ export const CLAVE = "Clave";
 export const TELEFONO = "Teléfono";
 export const FECHA_NACIMIENTO = "Fecha de Nacimiento";
 export const CONFIRMAR_CLAVE = "Confirmar Clave";
-export const REGISTRAR = "Registrar";
-export const CANCELAR = "Cancelar";
 export const PLACEHOLDER_NOMBRES = "Federico Jorge";
 export const PLACEHOLDER_APELLIDOS = "Bonel Tozzi";
 export const PLACEHOLDER_EMAIL = "bonelfederico@gmail.com";
@@ -84,3 +82,12 @@ export const CARGANDO_CARGOS_CIUDADES =
     "Espere un momento mientras cargamos los cargos y ciudades disponibles...";
 export const CARGANDO_EMPLEADOS_REGISTRO = "Registrando empleado...";
 export const EMPLEADO_CREADO_EXITO = "El empleado se ha creado con exito";
+
+// Modal de confirmacion de eliminacion de empleados
+export const MODAL_DEL_EMPLEADO_TITLE = "Eliminando Empleado"
+export const MODAL_DEL_EMPLEADO_QUESTION = "Esta a punto de borrar el empleado y toda su información de manera permanente.\n\n Esta acción no puede ser recuperada. \n¿Desea continuar?"
+
+// Generales
+export const CONTINUAR = "Continuar";
+export const REGISTRAR = "Registrar";
+export const CANCELAR = "Cancelar";

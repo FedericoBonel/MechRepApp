@@ -2,7 +2,6 @@
     border: none;
     height: 2px;
     background-color: var(--color-text-dark);
-    margin: 17px 0;
 }
 
 .container__single-empleado_header {
@@ -10,12 +9,37 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin: 17px 0;
 }
 
 .container__single-empleado_header div {
     display: inherit;
     align-items: inherit;
+    justify-content: inherit;
+}
+
+.container__single-empleado_header-toggleinfo {
+    background: none;
+    border: none;
+    flex: 2;
+    display: inherit;
+    align-items: inherit;
+    justify-content: inherit;
+    padding: 17px 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.container__single-empleado_header-toggleinfo:active {
+    filter: opacity(0.6);
+}
+
+.container__single-empleado_header-toggleinfo svg {
+    margin-left:32px;
+    color: var(--color-button);
+}
+
+.container__single-empleado_header-actionbtns {
+    margin: 0 32px;
 }
 
 .container__single-empleado_header div > span {
@@ -33,13 +57,26 @@
     color: var(--color-hint);
 }
 
+.container__single-empleado_header-contratado {
+    font-weight: 700;
+}
+
+.container__single-empleado_header-contratado_true {
+    color: var(--color-confirmation);
+}
+
+.container__single-empleado_header-contratado_false {
+    color: var(--color-alert);
+}
+
+
 .container__single-empleado_info {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     border: 2px solid var(--color-text-dark);
     border-radius: var(--border-radius-cards);
     padding: 16px;
+    margin-bottom: 16px;
 }
 
 .container__single-empleado_info-left {
@@ -73,15 +110,16 @@
     justify-content: space-between;
     align-items: flex-end;
 }
-
-.container__single-empleado_info-right > p {
-    font-weight: 700;
-}
-
-.container__single-empleado_info-contratado_true {
-    color: var(--color-confirmation);
-}
-
-.container__single-empleado_info-contratado_false {
+.container__single-empleado_info-deletebtn {
+    border: none;
+    background: transparent;
+    padding: 4px;
+    font-size: 24px;
     color: var(--color-alert);
+    filter: contrast(0);
+    cursor: pointer;
+}
+
+.container__single-empleado_info-deletebtn:hover {
+    filter: none;
 }
