@@ -85,7 +85,7 @@ export const EMPLEADO_CREADO_EXITO = "El empleado se ha creado con exito";
 
 // Modal de confirmacion de eliminacion de empleados
 export const MODAL_DEL_EMPLEADO_TITLE = "Eliminando Empleado"
-export const MODAL_DEL_EMPLEADO_QUESTION = "Esta a punto de borrar el empleado y toda su información de manera permanente.\n\n Esta acción no puede ser recuperada. \n¿Desea continuar?"
+export const MODAL_DEL_EMPLEADO_QUESTION = "Está a punto de borrar el empleado y toda su información de manera permanente.\n\n Esta acción es irreversible. \n¿Desea continuar?"
 
 // Generales
 export const CONTINUAR = "Continuar";
