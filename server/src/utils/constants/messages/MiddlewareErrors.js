@@ -7,6 +7,8 @@ const MESSAGES = {
     // Error handler
     DEFAULT_SERVER_ERROR:
         "Hubo un error interno en el servidor, por favor intente nuevamente",
+    ENTITY_NOT_FOUND:
+        "La entidad no fue encontrada con ese identificador: ",
     // Validation Check
     BODY_VALIDATION_FAILED: "La validacion del cuerpo recibido ha fallado",
 };

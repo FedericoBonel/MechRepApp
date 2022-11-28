@@ -12,11 +12,15 @@
     --color-text-light: white;
     --color-text-dark: black;
     --color-border-dark: black;
+    --color-overlay-dark: rgba(0, 0, 0, 0.502);
     --color-border-disabled: gray;
     --color-shadow: gray;
     --color-hint: #808080;
+    --color-confirmation: #009301;
     --border-radius-buttons: 4px;
     --border-radius-cards: 8px;
+    /* Sobreescritura de los estilos de toastify */
+    --toastify-toast-width: 400px;
 }
 
 /* Scrollbar */
@@ -101,6 +105,22 @@ code {
     filter: opacity(0.6);
 }
 
+.container__button-load_more {
+    font-size: 16px;
+    color: var(--color-button);
+    border-radius: var(--border-radius-buttons);
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 16px 0 8px 0;
+    margin: auto;
+    display: block;
+}
+
+.container__button-load_more:active {
+    filter: opacity(0.6);
+}
+
 /* Estilos de los mensajes de los formularios */
 
 .container__form-alert {
@@ -119,9 +139,48 @@ code {
 /* Estilos de mensajes de carga */
 
 .container__loading-msg {
+    margin: 16px;
     text-align: center;
 }
 
-.container__loading-msg p {
-    margin: 16px;
+/* Animaciones reutilizadas en varias partes */
+
+/* Animacion de entrada de menus */
+.swing-in {
+    -webkit-animation: swing-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+        both;
+    animation: swing-in 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@-webkit-keyframes swing-in {
+    0% {
+        -webkit-transform: rotateX(-100deg);
+        transform: rotateX(-100deg);
+        -webkit-transform-origin: top;
+        transform-origin: top;
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: rotateX(0deg);
+        transform: rotateX(0deg);
+        -webkit-transform-origin: top;
+        transform-origin: top;
+        opacity: 1;
+    }
+}
+@keyframes swing-in {
+    0% {
+        -webkit-transform: rotateX(-100deg);
+        transform: rotateX(-100deg);
+        -webkit-transform-origin: top;
+        transform-origin: top;
+        opacity: 0;
+    }
+    100% {
+        -webkit-transform: rotateX(0deg);
+        transform: rotateX(0deg);
+        -webkit-transform-origin: top;
+        transform-origin: top;
+        opacity: 1;
+    }
 }

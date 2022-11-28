@@ -5,9 +5,32 @@
 // Navbar -----------------------------------------------------------------------------
 export const NAVBAR_LOGO_ALT = "El logo de la aplicación";
 
+// Select -----------------------------------------------------------------------------
+export const RESETEAR_MENU = "-- Resetear Selección --";
+
 // Menu Empleados ---------------------------------------------------------------------
 export const EMPLEADOS = "Empleados";
 export const MENU_EMPLEADOS_TITLE = "Listado de Empleados";
+export const MENU_EMPLEADOS_NO_EMPLEADOS =
+    "No hay empleados registrados que mostrar... ";
+export const MENU_EMPLEADOS_NO_MAS_EMPLEADOS =
+    "Has llegado al fin de la lista de empleados";
+export const MENU_EMPLEADOS_SIGUIENTE_PAG_EMPLEADOS = "Cargar mas empleados";
+export const MENU_EMPLEADOS_CARGANDO = "Cargando los Empleados disponibles... ";
+export const MENU_EMPLEADOS_FECHA_CREACION = "Fecha de Registro: ";
+export const MENU_EMPLEADOS_FECHA_NACIMIENTO = "Fecha de Nacimiento: ";
+export const MENU_EMPLEADOS_DIRECCION = "Direccion: ";
+export const MENU_EMPLEADOS_TELEFONO = "Telefono: ";
+export const MENU_EMPLEADOS_EMAIL = "Email: ";
+export const MENU_EMPLEADOS_CONTRATADO = "CONTRATADO";
+export const MENU_EMPLEADOS_NO_CONTRATADO = "NO CONTRATADO";
+export const MENU_EMPLEADOS_FILTRAR_CARGO = "Filtrar por cargo: ";
+export const MENU_EMPLEADOS_MOSTRAR_FILTROS = "Mostrar Filtros";
+export const MENU_EMPLEADOS_ESCONDER_FILTROS = "Esconder Filtros";
+export const MENU_EMPLEADOS_BORRAR_EMPLEADO = "Borrar Empleado";
+export const MENU_EMPLEADOS_NO_PUDO_BORRAR_EMPLEADO =
+    "El empleado no se puede eliminar porque ha participado en reportes. Se ha cambiado su estado a no contratado";
+
 // Menu Cargos ---------------------------------------------------------------------
 export const CARGOS = "Cargos";
 export const MENU_CARGOS_TITLE = "Listado de Cargos";
@@ -17,7 +40,7 @@ export const MENU_CARGOS_FECHA_CREACION = "Fecha de Creación: ";
 export const MENU_CARGOS_CARGANDO = "Cargando los Cargos disponibles... ";
 export const MENU_CARGOS_NO_CARGOS = "No hay cargos que mostrar... ";
 
-// Formulario empleados ----------------------------------------------------------
+// Formulario nuevo empleado ----------------------------------------------------------
 export const NEW_EMPLEADO = "Nuevo Empleado";
 export const REGISTRAR_EMPLEADO = "Registrar empleado";
 export const NOMBRES = "Nombres";
@@ -32,8 +55,6 @@ export const CLAVE = "Clave";
 export const TELEFONO = "Teléfono";
 export const FECHA_NACIMIENTO = "Fecha de Nacimiento";
 export const CONFIRMAR_CLAVE = "Confirmar Clave";
-export const REGISTRAR = "Registrar";
-export const CANCELAR = "Cancelar";
 export const PLACEHOLDER_NOMBRES = "Federico Jorge";
 export const PLACEHOLDER_APELLIDOS = "Bonel Tozzi";
 export const PLACEHOLDER_EMAIL = "bonelfederico@gmail.com";
@@ -61,3 +82,12 @@ export const CARGANDO_CARGOS_CIUDADES =
     "Espere un momento mientras cargamos los cargos y ciudades disponibles...";
 export const CARGANDO_EMPLEADOS_REGISTRO = "Registrando empleado...";
 export const EMPLEADO_CREADO_EXITO = "El empleado se ha creado con exito";
+
+// Modal de confirmacion de eliminacion de empleados
+export const MODAL_DEL_EMPLEADO_TITLE = "Eliminando Empleado"
+export const MODAL_DEL_EMPLEADO_QUESTION = "Está a punto de borrar el empleado y toda su información de manera permanente.\n\n Esta acción es irreversible. \n¿Desea continuar?"
+
+// Generales
+export const CONTINUAR = "Continuar";
+export const REGISTRAR = "Registrar";
+export const CANCELAR = "Cancelar";
