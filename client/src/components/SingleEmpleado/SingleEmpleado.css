@@ -39,7 +39,7 @@
 }
 
 .container__single-empleado_header-actionbtns {
-    margin: 0 32px;
+    margin-left: 32px;
 }
 
 .container__single-empleado_header div > span {
@@ -59,6 +59,7 @@
 
 .container__single-empleado_header-contratado {
     font-weight: 700;
+    margin-left: 32px;
 }
 
 .container__single-empleado_header-contratado_true {
@@ -98,6 +99,7 @@
 
 .container__single-empleado_info-row_data {
     flex: 2;
+    word-break: break-word;
 }
 
 .container__single-empleado a {
