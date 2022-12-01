@@ -27,6 +27,15 @@ const getEmpleados = async (req, res) => {
     res.status(StatusCodes.OK).json(new SuccessResBody(empleados));
 };
 
+/** Controlador que maneja los requests que piden un empleado por id */
+const getEmpleadoById = async (req, res) => {
+    const { idEmpleado } = req.params;
+
+    const foundEmpleado = await empleadosService.getById(idEmpleado);
+
+    res.status(StatusCodes.OK).json(new SuccessResBody(foundEmpleado));
+};
+
 /** Controlador que maneja los requests que solicitan la eliminacion de un empleado */
 const deleteEmpleado = async (req, res) => {
     const { idEmpleado } = req.params;
@@ -38,4 +47,23 @@ const deleteEmpleado = async (req, res) => {
     res.status(StatusCodes.OK).json(new SuccessResBody(empleado));
 };
 
-module.exports = { createEmpleado, getEmpleados, deleteEmpleado };
+/** Controlador que maneja los requests que desean actualizar un empleado por id */
+const updateEmpleado = async (req, res) => {
+    const { idEmpleado } = req.params;
+    const updatedEmpleado = req.body;
+
+    const savedEmpleado = await empleadosService.updateById(
+        idEmpleado,
+        updatedEmpleado
+    );
+
+    res.status(StatusCodes.OK).json(new SuccessResBody(savedEmpleado));
+};
+
+module.exports = {
+    createEmpleado,
+    getEmpleados,
+    getEmpleadoById,
+    deleteEmpleado,
+    updateEmpleado,
+};

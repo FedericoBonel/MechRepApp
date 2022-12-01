@@ -27,6 +27,15 @@ const getAll = async (skip, limit) => {
 };
 
 /**
+ * Consigue un empleado por id
+ * @param {String} idEmpleado Id del empleado a buscar
+ * @returns Empleado con el id pedido o undefined en caso contrario
+ */
+const getById = async (idEmpleado) => {
+    return await empleadoModel.findById(idEmpleado).populate("cargo").lean();
+};
+
+/**
  * Consigue una lista de todos los empleados por cargo
  * @param {String} cargoId Identificador del cargo por el cual se desea filtrar la lista de empleados
  * @param {Number} skip Valor opcional, establece el numero de documentos que deben saltearse desde el inicio
@@ -54,7 +63,7 @@ const save = async (empleado) => {
 
 /**
  * Elimina un empleado por id y lo devuelve
- * @note Esta funcion no elimina los posibles reportes donde 
+ * @note Esta funcion no elimina los posibles reportes donde
  *       el empleado podria estar involucrado
  * @param {String} idEmpleado Id del empleado a ser eliminado
  * @returns Empleado eliminado
@@ -81,6 +90,7 @@ module.exports = {
     getByEmail,
     save,
     getAll,
+    getById,
     getByCargo,
     deleteById,
     updateById,

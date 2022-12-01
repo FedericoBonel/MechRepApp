@@ -41,6 +41,8 @@ const MESSAGES = {
     CLAVE_INVALID:
         "Por favor provea una contraseña que tenga una longitud de 4 a 20 caracteres",
     CARGO_NOT_PROVIDED: "Por favor provea un cargo para el empleado",
+    CONTRATADO_NOT_PROVIDED:
+        "Por favor provea un estado de contrato para el empleado como un valor booleano",
 };
 
 module.exports = MESSAGES;

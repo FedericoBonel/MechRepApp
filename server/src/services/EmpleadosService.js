@@ -74,6 +74,25 @@ const getAll = async (page = 1, limit = 10) => {
 };
 
 /**
+ * Consigue un empleado por id
+ * @param {String} idEmpleado Id del empleado a buscar
+ * @throws {NotFoundError} Si no existe un empleado con ese id
+ * @returns Empleado con el id pedido
+ */
+const getById = async (idEmpleado) => {
+    const savedEmpleado = await empleadosRepositorio.getById(idEmpleado);
+
+    if (!savedEmpleado) {
+        throw new NotFoundError(
+            `${validatorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
+        );
+    }
+
+    // Extrae la informacion publica del empleado
+    return toEmpleadoBody(savedEmpleado);
+};
+
+/**
  * Consigue una lista de todos los empleados del sistema por cargo
  * @param {String} cargo Nombre del cargo del cual se desea conseguir los empleados
  * @param {Number} page Numero de la pagina de documentos que desean conseguirse, de ser 0 retorna todos los empleados con el cargo proveido
@@ -134,6 +153,70 @@ const deleteById = async (idEmpleado) => {
 };
 
 /**
+ * Actualiza a un empleado por id
+ * @param {String} idEmpleado Id del empleado a actualizar
+ * @throws {NotFoundError} Si el cargo, empleado o la ciudad referenciada no existe
+ * @throws {BadRequest} Si existe otro empleado con el nuevo email proveido
+ * @returns Empleado actualizado
+ */
+const updateById = async (idEmpleado, updatedEmpleado) => {
+    // Verifica que el cargo y ciudad existe y que no hay empleados con ese email
+    const foundCargo = await cargosRepositorio.getByNombre(
+        updatedEmpleado.cargo
+    );
+    if (!foundCargo) {
+        throw new NotFoundError(
+            `${validatorMsgs.CARGO_NOT_VALID}${updatedEmpleado.cargo}`
+        );
+    }
+
+    const foundEmpleado = await empleadosRepositorio.getByEmail(
+        updatedEmpleado.email
+    );
+    if (foundEmpleado && foundEmpleado._id.toString() !== idEmpleado) {
+        throw new BadRequestError(
+            `${validatorMsgs.EMPLEADOS_EMAIL_IN_USE}${updatedEmpleado.email}`
+        );
+    }
+
+    const foundCity = await ciudadRepository.getByName(
+        COUNTRY_CODE,
+        updatedEmpleado.direccion.ciudad
+    );
+    if (!foundCity) {
+        throw new NotFoundError(
+            `${validatorMsgs.CIUDAD_NOT_FOUND}${updatedEmpleado.direccion.ciudad}`
+        );
+    }
+
+    // Asigna el id del cargo al usuario
+    updatedEmpleado.cargo = foundCargo._id;
+
+    // Si se desea actualizar la contraseña, encriptala y asignala
+    if (updatedEmpleado.password) {
+        updatedEmpleado.password = await bcrypt.hash(
+            updatedEmpleado.password,
+            PASSWORD_SALT
+        );
+    }
+
+    const savedEmpleado = await empleadosRepositorio.updateById(
+        idEmpleado,
+        updatedEmpleado
+    );
+
+    if (!savedEmpleado) {
+        throw new NotFoundError(
+            `${validatorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
+        );
+    }
+
+    savedEmpleado.cargo = foundCargo;
+
+    return toEmpleadoBody(savedEmpleado);
+};
+
+/**
  * Extrae la informacion publica del empleado que sera expuesta a la web
  * @param {*} empleadoModel empleado tal y como se persiste en la base de datos
  * @returns empleado tal y como deberia ser expuesto a los usuarios de la API
@@ -146,4 +229,4 @@ const toEmpleadoBody = (empleadoModel) => {
     return empleadoBody;
 };
 
-module.exports = { save, getAll, getByCargo, deleteById };
+module.exports = { save, getAll, getByCargo, deleteById, updateById, getById };

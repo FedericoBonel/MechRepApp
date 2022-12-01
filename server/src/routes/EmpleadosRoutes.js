@@ -19,6 +19,11 @@ empleadosRouter
 // Empleado por Id -------------------------------------------------
 empleadosRouter
     .route("/:idEmpleado")
-    .delete(empleadosController.deleteEmpleado);
+    .get(empleadosController.getEmpleadoById)
+    .delete(empleadosController.deleteEmpleado)
+    .patch(
+        empleadosValidator.updateEmpleadoBodyValidator,
+        empleadosController.updateEmpleado
+    );
 
 module.exports = empleadosRouter;
