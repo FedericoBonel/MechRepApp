@@ -1,9 +1,15 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faSquareCaretDown } from "@fortawesome/free-solid-svg-icons";
+import {
+    faTrash,
+    faSquareCaretDown,
+    faEdit,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "./SingleEmpleado.css";
 
+import { routes } from "../../routes/";
 import { ModalConfirm } from "../";
 import { messages } from "../../assets/messages";
 import { CapitalizeEveryFirstLetter } from "../../utils/Strings";
@@ -20,7 +26,7 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
     const onConfirmDelete = () => {
         onDelete();
         setShowConfirmModal(false);
-    }
+    };
 
     // Renderizaciones -------------------------------------------------------------------------------------
     const renderedNames = (
@@ -55,6 +61,16 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
         >
             {<FontAwesomeIcon icon={faTrash} />}
         </button>
+    );
+
+    const renderedUpdateButton = (
+        <Link
+            to={`${routes.PATH_UPDATE_EMPLEADO}/${empleado._id}`}
+            className="container__single-empleado_info-updatebtn"
+            aria-label={messages.MENU_EMPLEADOS_BORRAR_EMPLEADO}
+        >
+            {<FontAwesomeIcon icon={faEdit} />}
+        </Link>
     );
 
     const renderedToggleInfoState = (
@@ -149,6 +165,7 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
                 </button>
                 <div className="container__single-empleado_header-actionbtns">
                     {renderedDeleteButton}
+                    {renderedUpdateButton}
                 </div>
             </div>
             {/* Informacion */}

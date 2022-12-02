@@ -13,7 +13,8 @@ import * as constants from "./Constants";
 export const isFechaNacimiento = (date) => {
     const validDateMax = new Date();
     validDateMax.setFullYear(
-        validDateMax.getFullYear() - constants.VALORES.EMPL_MIN_VALUE_YEARS_BIRTHDATE
+        validDateMax.getFullYear() -
+            constants.VALORES.EMPL_MIN_VALUE_YEARS_BIRTHDATE
     );
 
     let validatedDate;
@@ -106,6 +107,7 @@ export const isCalle = (calle) => {
 export const isNumero = (numero) => {
     return (
         constants.VALORES.EMPL_MIN_VALUE_NUMERO <= numero &&
-        numero <= constants.VALORES.EMPL_MAX_VALUE_NUMERO
+        numero <= constants.VALORES.EMPL_MAX_VALUE_NUMERO &&
+        numero
     );
 };

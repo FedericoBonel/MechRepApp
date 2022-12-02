@@ -1,12 +1,12 @@
 import { useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faClose } from "@fortawesome/free-solid-svg-icons";
 
-import "./FormularioEmpleados.css";
-import { messages } from "../../assets/messages/";
+import "./FormularioEdicionEmpleados.css";
 
+import { messages } from "../../assets/messages/";
 import { empleadosValidator, constantsValidator } from "../../utils/validators";
 import { routes } from "../../routes/";
 import ciudadesAPI from "../../api/CiudadesAPI";
@@ -54,23 +54,22 @@ const touchedInitialState = {
 };
 
 /**
- * Pagina del formulario de registro de empleados
+ * Pagina del formulario de edicion de empleados
  */
-const FormularioEmpleados = () => {
+const FormularioEdicionEmpleados = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const { idEmpleado } = useParams();
     // Estados ----------------------------------------------------------------------------------
-
-    // Estado que mantiene seguimiento los datos subidos al formulario
     const [form, setForm] = useState(formInitialState);
 
     // Estado que mantiene seguimiento de que campos fueron tocados por lo menos una vez
     const [touched, setTouched] = useState(touchedInitialState);
 
-    // Validaciones -----------------------------------------------------------------------------
+    // Validaciones ----------------------------------------------------------------------
 
-    // Valida el formulario devolviendo un objeto que contiene los campos
-    // y un booleano de error marcando si el valor ingresado es correcto o no
+    // Valida el formulario devolviendo un objeto que contiene 
+    // los campos y un booleano de error
     const validateForm = (form) => ({
         nombres: empleadosValidator.isNombres(form.nombres),
         apellidos: empleadosValidator.isApellidos(form.apellidos),
@@ -79,42 +78,84 @@ const FormularioEmpleados = () => {
         calle: empleadosValidator.isCalle(form.calle),
         numero: empleadosValidator.isNumero(form.numero),
         cargo: form.cargo !== "",
-        password: empleadosValidator.isPassword(form.password),
-        passwordConfirmar:
-            form.password === form.passwordConfirmar &&
-            form.passwordConfirmar.length,
+        password:
+            form.password === "" ||
+            empleadosValidator.isPassword(form.password),
+        passwordConfirmar: form.password === form.passwordConfirmar,
         telefono: empleadosValidator.isTelefono(form.telefono),
         fechaNacimiento: empleadosValidator.isFechaNacimiento(
             form.fechaNacimiento
         ),
     });
-    const isFormFieldValid = validateForm(form);
-    const canSubmit = Object.keys(isFormFieldValid).every(
-        (formField) => isFormFieldValid[formField]
+    const formFieldsAreValid = validateForm(form);
+    const canSubmit = Object.keys(formFieldsAreValid).every(
+        (formField) => formFieldsAreValid[formField]
     );
 
-    // Funcion que determina si un campo deberia ser marcado como incorrecto o no en la UI:
+    // Funcion que determina si un campo deberia ser marcado como incorrecto o no:
     // si el campo fue tocado por lo menos una vez y el valor ingresado fue incorrecto
     const shouldShowWarning = (fieldName) =>
-        !isFormFieldValid[fieldName] && touched[fieldName];
+        !formFieldsAreValid[fieldName] && touched[fieldName];
 
     // Interacciones con la API ---------------------------------------------------------------
 
     const {
-        mutate: createEmpleado,
+        mutate: updateEmpleado,
         isSuccess: empleadoIsSuccess,
         isLoading: empleadoIsLoading,
         isError: empleadoIsError,
         error: empleadoError,
-    } = useMutation(empleadosAPI.postEmpleado, {
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: apiConstants.EMPLEADOS_CACHE,
-            });
-            setForm(formInitialState);
-            setTouched(touchedInitialState);
-        },
-    });
+    } = useMutation(
+        ({ idEmpleado, updatedEmpleado }) =>
+            empleadosAPI.patchEmpleado(idEmpleado, updatedEmpleado),
+        {
+            onSuccess: () => {
+                setForm(formInitialState);
+                setTouched(touchedInitialState);
+                queryClient.invalidateQueries({
+                    queryKey: apiConstants.EMPLEADOS_CACHE,
+                });
+            },
+        }
+    );
+
+    const {
+        isLoading: savedEmplIsLoading,
+        isError: savedEmplIsError,
+        error: savedEmplError,
+        isSuccess: savedEmplIsSuccess,
+    } = useQuery(
+        [apiConstants.EMPLEADOS_CACHE, idEmpleado],
+        () => empleadosAPI.getEmpleadoById(idEmpleado),
+        {
+            onSuccess: ({ data }) =>
+                setForm({
+                    nombres: data.nombres,
+                    apellidos: data.apellidos,
+                    fechaNacimiento: new Date(data.fechaNacimiento),
+                    email: data.email,
+                    pais: PAIS,
+                    ciudad: data.direccion.ciudad,
+                    calle: data.direccion.calle,
+                    numero: data.direccion.numero,
+                    cargo: data.cargo,
+                    password: "",
+                    passwordConfirmar: "",
+                    telefono: data.telefono,
+                    contratado: data.contratado,
+                }),
+            refetchInterval: Infinity,
+            refetchOnWindowFocus: false,
+        }
+    );
+
+    if (savedEmplIsError) {
+        navigate(
+            `${routes.PATH_ERROR}/${
+                savedEmplError.response ? savedEmplError.response.status : "500"
+            }`
+        );
+    }
 
     const {
         isLoading: cargoIsLoading,
@@ -162,7 +203,10 @@ const FormularioEmpleados = () => {
     const onChange = (e) =>
         setForm((prevForm) => ({
             ...prevForm,
-            [e.target.name]: e.target.value,
+            [e.target.name]:
+                e.target.type === "checkbox"
+                    ? e.target.checked
+                    : e.target.value,
         }));
 
     // Maneja el envio del formulario
@@ -173,20 +217,24 @@ const FormularioEmpleados = () => {
             return;
         }
 
-        createEmpleado({
-            nombres: form.nombres,
-            apellidos: form.apellidos,
-            email: form.email,
-            fechaNacimiento: form.fechaNacimiento.toISOString(),
-            direccion: {
-                pais: form.pais,
-                ciudad: form.ciudad,
-                calle: form.calle,
-                numero: form.numero,
+        updateEmpleado({
+            idEmpleado,
+            updatedEmpleado: {
+                nombres: form.nombres,
+                apellidos: form.apellidos,
+                email: form.email,
+                fechaNacimiento: form.fechaNacimiento.toISOString(),
+                direccion: {
+                    pais: form.pais,
+                    ciudad: form.ciudad,
+                    calle: form.calle,
+                    numero: form.numero,
+                },
+                cargo: form.cargo,
+                password: form.password.length ? form.password : undefined,
+                telefono: form.telefono,
+                contratado: form.contratado,
             },
-            cargo: form.cargo,
-            password: form.password,
-            telefono: form.telefono,
         });
     };
 
@@ -201,12 +249,9 @@ const FormularioEmpleados = () => {
             renderedSubmitStatus = (
                 <p className="container__form-alert">
                     {empleadoError.response.data.errorMsg} <br />
-                    {empleadoError.response.data.errors?.map((error) => (
-                        <>
-                            {error.msg}
-                            <br />
-                        </>
-                    ))}
+                    {empleadoError.response.data.errors?.map(
+                        (error) => error.msg
+                    )}
                 </p>
             );
         } else {
@@ -215,14 +260,14 @@ const FormularioEmpleados = () => {
     } else if (empleadoIsSuccess) {
         renderedSubmitStatus = (
             <p className="container__form-success">
-                {messages.EMPLEADO_CREADO_EXITO}
+                {messages.EMPLEADO_GUARDADO_EXITO}
             </p>
         );
     }
 
     const renderedForm = (
         <form onSubmit={onSubmit}>
-            <div className="container__form-empleados_card-row">
+            <div className="container__formedit-empleados_card-row">
                 {/* Nombres */}
                 <Input
                     required={true}
@@ -231,12 +276,16 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.NOMBRES}
                     name="nombres"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_NOMBRES}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_NOMBRES}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_NOMBRES
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_NOMBRES
+                    }
                     warning={messages.HINT_NOMBRES}
                     value={form.nombres}
                     onBlur={onBlur}
-                    className="container_form-empleados_card-row_left"
+                    className="container_formedit-empleados_card-row_left"
                 />
                 {/* Apellidos */}
                 <Input
@@ -246,49 +295,35 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.APELLIDOS}
                     name="apellidos"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_APELLIDOS}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_APELLIDOS}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_APELLIDOS
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_APELLIDOS
+                    }
                     warning={messages.HINT_APELLIDOS}
                     value={form.apellidos}
                     onBlur={onBlur}
-                    className="container_form-empleados_card-row_right"
+                    className="container_formedit-empleados_card-row_right"
                 />
             </div>
-            <div className="container__form-empleados_card-row">
-                {/* Fecha de nacimiento */}
-                <Input
-                    label={messages.FECHA_NACIMIENTO}
-                    value={form.fechaNacimiento}
-                    setValue={(date) => {
-                        setForm((prevForm) => ({
-                            ...prevForm,
-                            fechaNacimiento: date,
-                        }));
-                    }}
-                    maxDate={limitFechaNacimiento}
-                    warning={messages.HINT_FECHA_NACIMIENTO}
-                    placeholder={`${messages.PLACEHOLDER_FECHA_NACIMIENTO}`}
-                    type="date"
-                    required={true}
-                    className="container_form-empleados_card-row_left"
-                />
-                {/* Cargo */}
-                {cargoIsSuccess && (
-                    <Select
-                        required={true}
-                        showWarning={shouldShowWarning("cargo")}
-                        label={messages.CARGO}
-                        options={cargos.data.map((cargo) => cargo.nombre)}
-                        value={form.cargo}
-                        setValue={onChange}
-                        name="cargo"
-                        noSelection={messages.SELECT_CARGO_DEFAULT}
-                        onBlur={onBlur}
-                        className="container_form-empleados_card-row_right"
-                    />
-                )}
-            </div>
-            <div className="container__form-empleados_card-row">
+            {/* Fecha de nacimiento */}
+            <Input
+                label={messages.FECHA_NACIMIENTO}
+                value={form.fechaNacimiento}
+                setValue={(date) => {
+                    setForm((prevForm) => ({
+                        ...prevForm,
+                        fechaNacimiento: date,
+                    }));
+                }}
+                maxDate={limitFechaNacimiento}
+                warning={messages.HINT_FECHA_NACIMIENTO}
+                placeholder={`${messages.PLACEHOLDER_FECHA_NACIMIENTO}`}
+                type="date"
+                required={true}
+            />
+            <div className="container__formedit-empleados_card-row">
                 {/* Email */}
                 <Input
                     required={true}
@@ -303,7 +338,7 @@ const FormularioEmpleados = () => {
                     type={"email"}
                     value={form.email}
                     onBlur={onBlur}
-                    className="container_form-empleados_card-row_left"
+                    className="container_formedit-empleados_card-row_left"
                 />
                 {/* Telefono */}
                 <Input
@@ -319,10 +354,10 @@ const FormularioEmpleados = () => {
                     type={"tel"}
                     value={form.telefono}
                     onBlur={onBlur}
-                    className="container_form-empleados_card-row_right"
+                    className="container_formedit-empleados_card-row_right"
                 />
             </div>
-            <div className="container__form-empleados_card-row">
+            <div className="container__formedit-empleados_card-row">
                 {/* Pais */}
                 <Input
                     setValue={onChange}
@@ -331,7 +366,7 @@ const FormularioEmpleados = () => {
                     type={"text"}
                     value={form.pais}
                     disabled={true}
-                    className="container_form-empleados_card-row_left"
+                    className="container_formedit-empleados_card-row_left"
                 />
                 {/* Ciudad */}
                 {ciudadIsSuccess && (
@@ -345,12 +380,12 @@ const FormularioEmpleados = () => {
                         name="ciudad"
                         noSelection={messages.SELECT_CIUDAD_DEFAULT}
                         onBlur={onBlur}
-                        className="container_form-empleados_card-row_right"
+                        className="container_formedit-empleados_card-row_right"
                     />
                 )}
             </div>
             {/* Calle y numero */}
-            <div className="container__form-empleados_card-row">
+            <div className="container__formedit-empleados_card-row">
                 <Input
                     required={true}
                     placeholder={messages.PLACEHOLDER_CALLE}
@@ -363,7 +398,7 @@ const FormularioEmpleados = () => {
                     type={"text"}
                     warning={messages.HINT_CALLE}
                     value={form.calle}
-                    className="container__form-empleados_card-row_calle container_form-empleados_card-row_left"
+                    className="container__formedit-empleados_card-row_calle container_formedit-empleados_card-row_left"
                     onBlur={onBlur}
                 />
                 <Input
@@ -378,46 +413,79 @@ const FormularioEmpleados = () => {
                     type={"number"}
                     warning={messages.HINT_ALTURA}
                     value={form.numero}
-                    className="container__form-empleados_card-row_altura"
+                    className="container__formedit-empleados_card-row_altura"
                     onBlur={onBlur}
                 />
             </div>
-            <div className="container__form-empleados_card-row">
+            <div className="container__formedit-empleados_card-row">
+                {/* Cargo */}
+                {cargoIsSuccess && (
+                    <Select
+                        required={true}
+                        showWarning={shouldShowWarning("cargo")}
+                        label={messages.CARGO}
+                        options={cargos.data.map((cargo) => cargo.nombre)}
+                        value={form.cargo}
+                        setValue={onChange}
+                        name="cargo"
+                        noSelection={messages.SELECT_CARGO_DEFAULT}
+                        onBlur={onBlur}
+                        className="container_formedit-empleados_card-row_left"
+                    />
+                )}
+                {/* Contratado */}
+                <Input
+                    setValue={onChange}
+                    label={messages.CONTRATADO}
+                    name="contratado"
+                    type="checkbox"
+                    value={form.contratado}
+                    hint={messages.HINT_CONTRATADO}
+                    className="container_formedit-empleados_card-row_right"
+                />
+            </div>
+            <div className="container__formedit-empleados_card-row">
                 {/* Clave */}
                 <Input
-                    required={true}
                     placeholder={messages.PLACEHOLDER_CLAVE}
                     showWarning={shouldShowWarning("password")}
                     setValue={onChange}
                     label={messages.CLAVE}
                     name="password"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD
+                    }
                     warning={messages.HINT_CLAVE}
                     type={"password"}
                     value={form.password}
                     onBlur={onBlur}
-                    className="container_form-empleados_card-row_left"
+                    className="container_formedit-empleados_card-row_left"
                 />
                 {/* Confirmacion de clave */}
                 <Input
-                    required={true}
                     placeholder={messages.PLACEHOLDER_CLAVE}
                     showWarning={shouldShowWarning("passwordConfirmar")}
                     setValue={onChange}
                     label={messages.CONFIRMAR_CLAVE}
                     name="passwordConfirmar"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD
+                    }
                     warning={messages.HINT_CONFIRMARCLAVE}
                     type={"password"}
                     value={form.passwordConfirmar}
                     onBlur={onBlur}
-                    className="container_form-empleados_card-row_right"
+                    className="container_formedit-empleados_card-row_right"
                 />
             </div>
             {/* Botones de confirmacion */}
-            <div className="container__form-empleados_card-btns">
+            <div className="container__formedit-empleados_card-btns">
                 <Link
                     className="container__button-cancelar"
                     to={routes.PATH_EMPLEADOS}
@@ -431,7 +499,7 @@ const FormularioEmpleados = () => {
                     {empleadoIsLoading ? (
                         <FontAwesomeIcon icon={faSpinner} spin />
                     ) : (
-                        messages.REGISTRAR
+                        messages.GUARDAR
                     )}
                 </button>
             </div>
@@ -440,18 +508,21 @@ const FormularioEmpleados = () => {
     );
 
     return (
-        <main className="container__form-empleados">
-            <div className="container__form-empleados_card">
-                <div className="container__form-empleados_card-header">
-                    <h1>{messages.NEW_EMPLEADO}</h1>
+        <main className="container__formedit-empleados">
+            <div className="container__formedit-empleados_card">
+                <div className="container__formedit-empleados_card-header">
+                    <h1>{messages.UPDATE_EMPLEADO}</h1>
                     <Link to={routes.PATH_EMPLEADOS}>
                         <FontAwesomeIcon icon={faClose} size="xl" />
                     </Link>
                 </div>
-                {cargoIsSuccess && ciudadIsSuccess && renderedForm}
-                {(cargoIsLoading || ciudadIsLoading) && (
+                {savedEmplIsSuccess &&
+                    cargoIsSuccess &&
+                    ciudadIsSuccess &&
+                    renderedForm}
+                {(savedEmplIsLoading || cargoIsLoading || ciudadIsLoading) && (
                     <div className="container__loading-msg">
-                        <p>{messages.CARGANDO_CARGOS_CIUDADES}</p>
+                        <p>{messages.CARGANDO_CARGOS_CIUDADES_EMPL}</p>
                         <FontAwesomeIcon icon={faSpinner} spin size="2x" />
                     </div>
                 )}
@@ -460,4 +531,4 @@ const FormularioEmpleados = () => {
     );
 };
 
-export default FormularioEmpleados;
+export default FormularioEdicionEmpleados;

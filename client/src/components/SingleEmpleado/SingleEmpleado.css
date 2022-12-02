@@ -27,6 +27,7 @@
     padding: 17px 0;
     cursor: pointer;
     font-size: 16px;
+    text-align: left;
 }
 
 .container__single-empleado_header-toggleinfo:active {
@@ -39,7 +40,7 @@
 }
 
 .container__single-empleado_header-actionbtns {
-    margin: 0 32px;
+    margin-left: 32px;
 }
 
 .container__single-empleado_header div > span {
@@ -59,6 +60,7 @@
 
 .container__single-empleado_header-contratado {
     font-weight: 700;
+    margin-left: 32px;
 }
 
 .container__single-empleado_header-contratado_true {
@@ -98,6 +100,7 @@
 
 .container__single-empleado_info-row_data {
     flex: 2;
+    word-break: break-word;
 }
 
 .container__single-empleado a {
@@ -121,5 +124,17 @@
 }
 
 .container__single-empleado_info-deletebtn:hover {
+    filter: none;
+}
+
+.container__single-empleado_info-updatebtn {
+    margin-left: 8px;
+    padding: 4px;
+    font-size: 24px;
+    filter: contrast(0);
+    cursor: pointer;
+}
+
+.container__single-empleado_info-updatebtn:hover {
     filter: none;
 }

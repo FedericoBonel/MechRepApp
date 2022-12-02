@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./Input.css";
 import { constantsValidator } from "../../utils/validators/";
 
-const DATE_FORMAT = "dd/MM/yyyy"
+const DATE_FORMAT = "dd/MM/yyyy";
 
 /**
  * Componente personalizado
@@ -48,11 +48,14 @@ const Input = ({
                 disabled={disabled}
                 value={value}
                 pattern={
-                    type === "tel" ? constantsValidator.TELEFONO_PATTERN : undefined
+                    type === "tel"
+                        ? constantsValidator.TELEFONO_PATTERN
+                        : undefined
                 }
                 min={min}
                 max={max}
                 onBlur={onBlur}
+                checked={type === "checkbox" ? value : undefined}
             />
         );
     } else {
@@ -93,7 +96,15 @@ const Input = ({
                     {hint}
                 </small>
             )}
-            {showWarning && <p>{warning}</p>}
+            {showWarning && (
+                <small
+                    className={`container__input-hint${
+                        showWarning ? "_warning" : ""
+                    }`}
+                >
+                    {warning}
+                </small>
+            )}
         </div>
     );
 };

@@ -1,10 +1,13 @@
 .container__modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 400px;
     min-height: 200px;
     padding: 32px;
     background: var(--color-menus);
     border-radius: var(--border-radius-cards);
-    margin: 10% auto;
 }
 
 .container__modal h2 {

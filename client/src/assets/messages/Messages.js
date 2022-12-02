@@ -42,6 +42,7 @@ export const MENU_CARGOS_NO_CARGOS = "No hay cargos que mostrar... ";
 
 // Formulario nuevo empleado ----------------------------------------------------------
 export const NEW_EMPLEADO = "Nuevo Empleado";
+export const UPDATE_EMPLEADO = "Editar Empleado";
 export const REGISTRAR_EMPLEADO = "Registrar empleado";
 export const NOMBRES = "Nombres";
 export const APELLIDOS = "Apellidos";
@@ -52,6 +53,7 @@ export const CALLE = "Calle de Residencia";
 export const ALTURA = "Altura";
 export const CARGO = "Cargo";
 export const CLAVE = "Clave";
+export const CONTRATADO = "Contratado";
 export const TELEFONO = "Teléfono";
 export const FECHA_NACIMIENTO = "Fecha de Nacimiento";
 export const CONFIRMAR_CLAVE = "Confirmar Clave";
@@ -70,6 +72,8 @@ export const HINT_EMAIL =
     "El email debe tener un '@' y un dominio y subdominio válido (p. ej. universidad.edu, gmail.com)";
 export const HINT_CALLE = "La calle puede tener desde 4 hasta 255 caracteres";
 export const HINT_ALTURA = "La altura debe ser un número entre 0 y 59999";
+export const HINT_CONTRATADO =
+    "Seleccione solo si el empleado se haya contratado y desea que pueda utilizar el sistema";
 export const HINT_CLAVE = "La clave puede tener desde 4 a 20 caracteres";
 export const HINT_CONFIRMARCLAVE = "Repita la contraseña ingresada";
 export const HINT_TELEFONO =
@@ -82,12 +86,17 @@ export const CARGANDO_CARGOS_CIUDADES =
     "Espere un momento mientras cargamos los cargos y ciudades disponibles...";
 export const CARGANDO_EMPLEADOS_REGISTRO = "Registrando empleado...";
 export const EMPLEADO_CREADO_EXITO = "El empleado se ha creado con exito";
+export const EMPLEADO_GUARDADO_EXITO = "El empleado se ha guardado con exito";
+export const CARGANDO_CARGOS_CIUDADES_EMPL =
+    "Espere un momento mientras cargamos la información del empleado...";
 
 // Modal de confirmacion de eliminacion de empleados
-export const MODAL_DEL_EMPLEADO_TITLE = "Eliminando Empleado"
-export const MODAL_DEL_EMPLEADO_QUESTION = "Está a punto de borrar el empleado y toda su información de manera permanente.\n\n Esta acción es irreversible. \n¿Desea continuar?"
+export const MODAL_DEL_EMPLEADO_TITLE = "Eliminando Empleado";
+export const MODAL_DEL_EMPLEADO_QUESTION =
+    "Está a punto de borrar el empleado y toda su información de manera permanente.\n\n Esta acción es irreversible. \n¿Desea continuar?";
 
 // Generales
 export const CONTINUAR = "Continuar";
 export const REGISTRAR = "Registrar";
 export const CANCELAR = "Cancelar";
+export const GUARDAR = "Guardar";

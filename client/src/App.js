@@ -5,7 +5,12 @@ import {
     Navigate,
 } from "react-router-dom";
 
-import { MenuEmpleados, FormularioEmpleados, MenuCargos } from "./pages";
+import {
+    MenuEmpleados,
+    FormularioEmpleados,
+    MenuCargos,
+    FormularioEdicionEmpleados,
+} from "./pages";
 import { PrivateLayout } from "./layouts";
 import { routes } from "./routes/";
 
@@ -22,6 +27,11 @@ function App() {
                         <Route
                             path={routes.CREATE}
                             element={<FormularioEmpleados />}
+                        />
+                        {/* Edicion de empleados */}
+                        <Route
+                            path={`${routes.UPDATE}/:idEmpleado`}
+                            element={<FormularioEdicionEmpleados />}
                         />
                     </Route>
                     <Route path={`${routes.CARGOS}`}>

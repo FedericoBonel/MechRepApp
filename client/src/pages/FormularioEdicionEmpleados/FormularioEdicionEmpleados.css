@@ -1,12 +1,12 @@
-.container__form-empleados {
+.container__formedit-empleados {
     padding: 23px;
 }
 
-.container__form-empleados a {
+.container__formedit-empleados a {
     text-decoration: none;
 }
 
-.container__form-empleados_card {
+.container__formedit-empleados_card {
     background: var(--color-menus);
     width: 800px;
     margin: auto;
@@ -15,7 +15,7 @@
     box-shadow: 0px 0px 10px var(--color-shadow);
 }
 
-.container__form-empleados_card-header {
+.container__formedit-empleados_card-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -24,45 +24,45 @@
     color: var(--color-text-dark);
 }
 
-.container__form-empleados_card-header h1 {
+.container__formedit-empleados_card-header h1 {
     font-weight: 400;
     font-size: 38px;
 }
 
-.container__form-empleados_card-header a {
+.container__formedit-empleados_card-header a {
     color: inherit;
 }
 
-.container__form-empleados_card-row {
+.container__formedit-empleados_card-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.container_form-empleados_card-row_left {
+.container_formedit-empleados_card-row_right {
+    flex: 1;
+}
+
+.container_formedit-empleados_card-row_left {
+    flex: 1;
     margin-right: 26px;
-    flex: 1;
 }
 
-.container_form-empleados_card-row_right {
-    flex: 1;
-}
-
-.container__form-empleados_card-row_calle {
+.container__formedit-empleados_card-row_calle {
     flex: 2;
 }
 
-.container__form-empleados_card-row_altura {
+.container__formedit-empleados_card-row_altura {
     flex: 1;
 }
 
-.container__form-empleados_card-btns {
+.container__formedit-empleados_card-btns {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
 }
 
-.container__form-empleados_card-btns button {
+.container__formedit-empleados_card-btns button {
     margin-left: 16px;
 }
