@@ -58,7 +58,10 @@ const getByCargo = async (cargoId, skip = 0, limit = 0) => {
  * @returns Empleado guardado
  */
 const save = async (empleado) => {
-    return (await empleadoModel.create(empleado)).toObject();
+    const savedEmpleado = await (
+        await empleadoModel.create(empleado)
+    ).populate("cargo");
+    return savedEmpleado.toObject();
 };
 
 /**
@@ -83,6 +86,7 @@ const updateById = async (idEmpleado, updates) => {
         .findByIdAndUpdate(idEmpleado, updates, {
             new: true,
         })
+        .populate("cargo")
         .lean();
 };
 

@@ -17,43 +17,12 @@ const PASSWORD_SALT = Number(process.env.PASSWORD_SALT) || 12;
 /**
  * Registra un nuevo empleado en el sistema
  * @param {*} empleado Empleado a ser guardado
- * @throws {NotFoundError} Si el cargo o la ciudad referenciada no existe
- * @throws {BadRequestError} Si ya existe un usuario con el mismo email registrado
  * @returns El nuevo empleado guardado
  */
 const save = async (empleado) => {
-    // Asegurate que el cargo exista, que no exista un usuario con el mismo email
-    // y que la ciudad sea valida
-    const foundCargo = await cargosRepositorio.getByNombre(empleado.cargo);
-    if (!foundCargo) {
-        throw new NotFoundError(
-            `${validatorMsgs.CARGO_NOT_VALID}${empleado.cargo}`
-        );
-    }
+    const empleadoToSave = await toEmpleadoSchema(empleado);
 
-    const foundEmpleado = await empleadosRepositorio.getByEmail(empleado.email);
-    if (foundEmpleado) {
-        throw new BadRequestError(
-            `${validatorMsgs.EMPLEADOS_EMAIL_IN_USE}${empleado.email}`
-        );
-    }
-
-    const foundCity = await ciudadRepository.getByName(
-        COUNTRY_CODE,
-        empleado.direccion.ciudad
-    );
-    if (!foundCity) {
-        throw new NotFoundError(
-            `${validatorMsgs.CIUDAD_NOT_FOUND}${empleado.direccion.ciudad}`
-        );
-    }
-
-    // Asigna el id del cargo al usuario y encripta la clave
-    empleado.cargo = foundCargo._id;
-    empleado.password = await bcrypt.hash(empleado.password, PASSWORD_SALT);
-
-    const savedEmpleado = await empleadosRepositorio.save(empleado);
-    savedEmpleado.cargo = foundCargo;
+    const savedEmpleado = await empleadosRepositorio.save(empleadoToSave);
 
     return toEmpleadoBody(savedEmpleado);
 };
@@ -155,54 +124,16 @@ const deleteById = async (idEmpleado) => {
 /**
  * Actualiza a un empleado por id
  * @param {String} idEmpleado Id del empleado a actualizar
- * @throws {NotFoundError} Si el cargo, empleado o la ciudad referenciada no existe
- * @throws {BadRequest} Si existe otro empleado con el nuevo email proveido
+ * @param {*} updatedEmpleado Actualizaciones a ser aplicadas al empleado
  * @returns Empleado actualizado
  */
 const updateById = async (idEmpleado, updatedEmpleado) => {
-    // Verifica que el cargo y ciudad existe y que no hay empleados con ese email
-    const foundCargo = await cargosRepositorio.getByNombre(
-        updatedEmpleado.cargo
-    );
-    if (!foundCargo) {
-        throw new NotFoundError(
-            `${validatorMsgs.CARGO_NOT_VALID}${updatedEmpleado.cargo}`
-        );
-    }
-
-    const foundEmpleado = await empleadosRepositorio.getByEmail(
-        updatedEmpleado.email
-    );
-    if (foundEmpleado && foundEmpleado._id.toString() !== idEmpleado) {
-        throw new BadRequestError(
-            `${validatorMsgs.EMPLEADOS_EMAIL_IN_USE}${updatedEmpleado.email}`
-        );
-    }
-
-    const foundCity = await ciudadRepository.getByName(
-        COUNTRY_CODE,
-        updatedEmpleado.direccion.ciudad
-    );
-    if (!foundCity) {
-        throw new NotFoundError(
-            `${validatorMsgs.CIUDAD_NOT_FOUND}${updatedEmpleado.direccion.ciudad}`
-        );
-    }
-
-    // Asigna el id del cargo al usuario
-    updatedEmpleado.cargo = foundCargo._id;
-
-    // Si se desea actualizar la contraseña, encriptala y asignala
-    if (updatedEmpleado.password) {
-        updatedEmpleado.password = await bcrypt.hash(
-            updatedEmpleado.password,
-            PASSWORD_SALT
-        );
-    }
+    updatedEmpleado._id = idEmpleado;
+    const empleadoToSave = await toEmpleadoSchema(updatedEmpleado);
 
     const savedEmpleado = await empleadosRepositorio.updateById(
         idEmpleado,
-        updatedEmpleado
+        empleadoToSave
     );
 
     if (!savedEmpleado) {
@@ -210,8 +141,6 @@ const updateById = async (idEmpleado, updatedEmpleado) => {
             `${validatorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
         );
     }
-
-    savedEmpleado.cargo = foundCargo;
 
     return toEmpleadoBody(savedEmpleado);
 };
@@ -227,6 +156,61 @@ const toEmpleadoBody = (empleadoModel) => {
     empleadoBody.cargo = empleadoModel.cargo.nombre;
 
     return empleadoBody;
+};
+
+/**
+ * Convierte y estructura la informacion privada del empleado que sera persistida
+ * @param {*} empleadoInput empleado tal y como se expone en la web
+ * @throws {NotFoundError} Si el cargo o la ciudad referenciada no existe
+ * @throws {BadRequestError} Si ya existe otro empleado con el mismo email registrado
+ * @returns Empleado tal y como debe ser persistido en Base de Datos
+ */
+const toEmpleadoSchema = async (empleadoInput) => {
+    let { ...empleadoSchema } = empleadoInput;
+    // Asegurate que el cargo exista, que no exista un usuario con el mismo email
+    // y que la ciudad sea valida
+    const foundCargo = await cargosRepositorio.getByNombre(
+        empleadoSchema.cargo
+    );
+    if (!foundCargo) {
+        throw new NotFoundError(
+            `${validatorMsgs.CARGO_NOT_VALID}${empleadoSchema.cargo}`
+        );
+    }
+
+    console.log();
+
+    const foundEmpleado = await empleadosRepositorio.getByEmail(
+        empleadoSchema.email
+    );
+    if (foundEmpleado && foundEmpleado._id.toString() !== empleadoSchema._id) {
+        throw new BadRequestError(
+            `${validatorMsgs.EMPLEADOS_EMAIL_IN_USE}${empleadoSchema.email}`
+        );
+    }
+
+    const foundCity = await ciudadRepository.getByName(
+        COUNTRY_CODE,
+        empleadoSchema.direccion.ciudad
+    );
+    if (!foundCity) {
+        throw new NotFoundError(
+            `${validatorMsgs.CIUDAD_NOT_FOUND}${empleadoSchema.direccion.ciudad}`
+        );
+    }
+
+    // Asigna el id del cargo al usuario y encripta la clave
+    empleadoSchema.cargo = foundCargo._id;
+
+    // Si se desea hay contraseña, encriptala y asignala
+    if (empleadoSchema.password) {
+        empleadoSchema.password = await bcrypt.hash(
+            empleadoSchema.password,
+            PASSWORD_SALT
+        );
+    }
+
+    return empleadoSchema;
 };
 
 module.exports = { save, getAll, getByCargo, deleteById, updateById, getById };
