@@ -27,6 +27,7 @@
     padding: 17px 0;
     cursor: pointer;
     font-size: 16px;
+    text-align: left;
 }
 
 .container__single-empleado_header-toggleinfo:active {
@@ -123,5 +124,17 @@
 }
 
 .container__single-empleado_info-deletebtn:hover {
+    filter: none;
+}
+
+.container__single-empleado_info-updatebtn {
+    margin-left: 8px;
+    padding: 4px;
+    font-size: 24px;
+    filter: contrast(0);
+    cursor: pointer;
+}
+
+.container__single-empleado_info-updatebtn:hover {
     filter: none;
 }

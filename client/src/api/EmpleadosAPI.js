@@ -25,12 +25,33 @@ const getEmpleados = async (cargo = "", page = 1, limit = 10) => {
 };
 
 /**
+ * Busca un empleado por id
+ * @param {*} idEmpleado Id del empleado a buscar
+ * @returns El empleado encontrado
+ */
+const getEmpleadoById = async (idEmpleado) => {
+    const response = await empleadosInstanceAPI.get(`/${idEmpleado}`);
+    return response.data;
+}
+
+/**
  * Crea un empleado en el back end
  * @param {*} newEmpleado Nuevo empleado con todos sus campos
  * @returns La respuesta del servidor con el nuevo empleado
  */
 const postEmpleado = async (newEmpleado) => {
     return await empleadosInstanceAPI.post("/", newEmpleado);
+};
+
+/**
+ * Actualiza un empleado en el back end
+ * @param {String} idEmpleado Id del empleado a actualizar
+ * @param {*} updatedEmpleado Empleado y todos sus campos actualizados
+ * @returns La respuesta del servidor con el empleado editado
+ */
+const patchEmpleado = async (idEmpleado, updatedEmpleado) => {
+    const response = await empleadosInstanceAPI.patch(`/${idEmpleado}`, updatedEmpleado);
+    return await response.data;
 };
 
 /**
@@ -46,8 +67,10 @@ const deleteEmpleado = async (idEmpleado) => {
 
 const empleadosAPI = {
     getEmpleados,
+    getEmpleadoById,
     postEmpleado,
     deleteEmpleado,
+    patchEmpleado
 };
 
 export default empleadosAPI;
