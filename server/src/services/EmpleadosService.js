@@ -178,8 +178,6 @@ const toEmpleadoSchema = async (empleadoInput) => {
         );
     }
 
-    console.log();
-
     const foundEmpleado = await empleadosRepositorio.getByEmail(
         empleadoSchema.email
     );

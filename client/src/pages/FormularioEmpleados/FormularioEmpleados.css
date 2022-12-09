@@ -8,11 +8,11 @@
 
 .container__form-empleados_card {
     background: var(--color-menus);
+    border-radius: var(--border-radius-cards);
+    border: 1px var(--color-shadow) solid;
     width: 800px;
     margin: auto;
-    border-radius: var(--border-radius-cards);
     padding: 18px 31px;
-    box-shadow: 0px 0px 10px var(--color-shadow);
 }
 
 .container__form-empleados_card-header {
@@ -26,7 +26,7 @@
 
 .container__form-empleados_card-header h1 {
     font-weight: 400;
-    font-size: 38px;
+    font-size: var(--font-size-bigger);
 }
 
 .container__form-empleados_card-header a {
