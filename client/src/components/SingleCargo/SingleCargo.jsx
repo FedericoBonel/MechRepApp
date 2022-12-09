@@ -15,9 +15,7 @@ const SingleCargo = ({ cargo }) => {
     // Renderizaciones -------------------------------------------------------------------------------------
     const renderedAcciones = (
         <div className="container__single-cargo_info-row">
-            <h3 className="container__single-cargo_acciones-name">
-                {messages.MENU_CARGOS_ACCIONES}
-            </h3>
+            <h3>{messages.MENU_CARGOS_ACCIONES}</h3>
             <ul>
                 {cargo.acciones.map((accion) => (
                     <li key={accion._id}>{accion.verbo}</li>
