@@ -1,14 +1,11 @@
 .container__menu-cargos {
-    padding: 23px;
+    padding: 32px;
 }
 
 .container__menu-cargos_card {
-    background: var(--color-menus);
     margin: auto;
-    width: 1000px;
-    border-radius: var(--border-radius-cards);
-    padding: 18px 31px;
-    box-shadow: 0px 0px 10px var(--color-shadow);
+    min-width: 1000px;
+    max-width: 80%;
 }
 
 .container__menu-cargos_card-top {
@@ -16,16 +13,40 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 32px;
 }
 
 .container__menu-cargos_card-top h1 {
     font-weight: 400;
 }
 
-.container__menu-cargos_card-top a {
-    text-decoration: none;
+.container__menu-cargos_card-bottom {
+    display: flex;
+    flex-direction: row;
 }
 
-.container__menu-cargos_card-top a:active {
-    filter: opacity(0.6);
+.container__menu-cargos_card-menu {
+    background: var(--color-menus);
+    border-radius: var(--border-radius-cards);
+    border: 1px var(--color-shadow) solid;
+    min-height: 500px;
+    padding: 24px;
+    flex: 1;
+}
+
+.container__menu-cargos_card-menu_name {
+    font-size: var(--font-size-regular);
+    color: var(--color-hint);
+    margin-bottom: 16px;
+}
+
+.container__menu-cargos_card-list {
+    max-height: 500px;
+    overflow-y: scroll;
+    padding-left: 32px;
+    flex: 4;
+}
+
+.container__menu-cargos_card-list::-webkit-scrollbar-track {
+    display: none;
 }

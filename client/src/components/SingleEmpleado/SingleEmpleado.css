@@ -1,7 +1,8 @@
-.container__single-empleado hr {
-    border: none;
-    height: 2px;
-    background-color: var(--color-text-dark);
+.container__single-empleado {
+    border: 1px var(--color-shadow) solid;
+    background: var(--color-menus);
+    border-radius: var(--border-radius-cards);
+    margin-bottom: 24px;
 }
 
 .container__single-empleado_header {
@@ -12,21 +13,22 @@
 }
 
 .container__single-empleado_header div {
-    display: inherit;
-    align-items: inherit;
-    justify-content: inherit;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .container__single-empleado_header-toggleinfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: none;
     border: none;
     flex: 2;
-    display: inherit;
-    align-items: inherit;
-    justify-content: inherit;
-    padding: 17px 0;
+    padding: 24px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: var(--font-size-regular);
     text-align: left;
 }
 
@@ -35,7 +37,7 @@
 }
 
 .container__single-empleado_header-toggleinfo svg {
-    margin-left:32px;
+    margin-left: 32px;
     color: var(--color-button);
 }
 
@@ -49,18 +51,19 @@
 
 .container__single-empleado_header-nombre {
     font-weight: 400;
-    font-size: 20px;
+    font-size: var(--font-size-big);
 }
 
 .container__single-empleado_header-cargo {
     font-weight: 400;
-    font-size: 20px;
+    font-size: var(--font-size-big);
     color: var(--color-hint);
 }
 
 .container__single-empleado_header-contratado {
     font-weight: 700;
     margin-left: 32px;
+    text-align: end;
 }
 
 .container__single-empleado_header-contratado_true {
@@ -71,35 +74,50 @@
     color: var(--color-alert);
 }
 
-
 .container__single-empleado_info {
     display: flex;
     flex-direction: row;
-    border: 2px solid var(--color-text-dark);
-    border-radius: var(--border-radius-cards);
-    padding: 16px;
+    padding: 0 16px;
     margin-bottom: 16px;
+    border-top: 1px var(--color-border-dark) solid;
 }
 
 .container__single-empleado_info-left {
     flex: 2;
+    margin-top: 16px;
+}
+
+.container__single-empleado_info-right {
+    margin-top: 16px;
+    text-align: end;
 }
 
 .container__single-empleado_info-row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 8px;
+    margin: 0 0 8px 12px;
+}
+
+.container__single-empleado_info-row h3 {
+    font-weight: 400;
+    font-size: var(--font-size-regular);
 }
 
 .container__single-empleado_info-row aside {
-    flex: 1;
-    text-align: end;
-    margin-right: 32px;
+    margin-top: 8px;
+    font-weight: 400;
+    font-size: var(--font-size-smaller);
+    color: var(--color-hint);
+}
+
+.container__single-empleado_info-row p,
+a {
+    font-size: var(--font-size-small);
+}
+
+.container__single-empleado_info-row div {
+    margin-left: 24px;
 }
 
 .container__single-empleado_info-row_data {
-    flex: 2;
     word-break: break-word;
 }
 
@@ -107,17 +125,11 @@
     color: var(--color-button);
 }
 
-.container__single-empleado_info-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-}
 .container__single-empleado_info-deletebtn {
     border: none;
     background: transparent;
     padding: 4px;
-    font-size: 24px;
+    font-size: var(--font-size-bigger);
     color: var(--color-alert);
     filter: contrast(0);
     cursor: pointer;
@@ -129,8 +141,9 @@
 
 .container__single-empleado_info-updatebtn {
     margin-left: 8px;
+    margin-right: 16px;
     padding: 4px;
-    font-size: 24px;
+    font-size: var(--font-size-bigger);
     filter: contrast(0);
     cursor: pointer;
 }

@@ -22,7 +22,7 @@
 }
 
 .container__navbar-links li {
-    font-size: 16px;
+    font-size: var(--font-size-regular);
     height: 100%;
     display: flex;
     flex-direction: row;
@@ -37,6 +37,8 @@
     text-decoration: none;
     height: 100%;
     padding: 18px;
+    display: flex;
+    align-items: center;
 }
 .container__navbar-links_selected {
     color: var(--color-selected-button);

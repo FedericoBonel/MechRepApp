@@ -7,11 +7,7 @@ import {
 } from "react-query";
 import { ToastContainer, toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faSpinner,
-    faFilter,
-    faCaretSquareUp,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./MenuEmpleados.css";
@@ -29,7 +25,6 @@ const MenuEmpleados = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     // Estados ---------------------------------------------------------------
-    const [showFilterMenu, setShowFilterMenu] = useState(false);
     const [filterCargoSelected, setFilterCargoSelected] = useState("");
 
     // Interacciones con API -------------------------------------------------
@@ -104,7 +99,6 @@ const MenuEmpleados = () => {
     }
 
     // Handlers de eventos ---------------------------------------------------
-    const onClickFilter = () => setShowFilterMenu((prevShow) => !prevShow);
     const onSelectFilter = (e) => setFilterCargoSelected(e.target.value);
 
     // Renderizaciones -------------------------------------------------------
@@ -155,15 +149,21 @@ const MenuEmpleados = () => {
         }
     }
 
-    let renderedFilterMenu;
-    if (showFilterMenu) {
-        if (cargoIsSuccess) {
-            let cargosOptions = cargos?.data.map((cargo) => cargo.nombre);
-            // Adjunta la opcion de reseteo de seleccion
-            cargosOptions.push("");
-            renderedFilterMenu = (
-                <div className="container__menu-empleados_card-menu swing-in">
-                    <p>{messages.MENU_EMPLEADOS_FILTRAR_CARGO}</p>
+    let renderedCargoFilter;
+    if (cargoIsSuccess) {
+        let cargosOptions = cargos?.data.map((cargo) => cargo.nombre);
+        // Adjunta la opcion de reseteo de seleccion
+        cargosOptions.push("");
+        renderedCargoFilter = (
+            <>
+                <h2 className="container__menu-empleados_card-menu_name">
+                    {messages.MENU_EMPLEADOS_FILTROS}{" "}
+                    {<FontAwesomeIcon icon={faFilter} />}
+                </h2>
+                <div>
+                    <h3 className="container__menu-empleados_card-menu_propname">
+                        {messages.MENU_EMPLEADOS_FILTRAR_CARGO}
+                    </h3>
                     <Select
                         className="container__menu-empleados_card-menu_select"
                         value={filterCargoSelected}
@@ -172,35 +172,23 @@ const MenuEmpleados = () => {
                         noSelection={messages.SELECT_CARGO_DEFAULT}
                     />
                 </div>
-            );
-        } else if (cargoIsLoading) {
-            renderedFilterMenu = (
+            </>
+        );
+    } else if (cargoIsLoading) {
+        renderedCargoFilter = (
+            <div className="container__loading-msg">
                 <FontAwesomeIcon icon={faSpinner} spin size={"2x"} />
-            );
-        }
+            </div>
+        );
     }
-
-    const renderedFilterToggleButton = (
-        <button
-            onClick={onClickFilter}
-            className="container__menu-empleados_card-top_filter"
-        >
-            <FontAwesomeIcon
-                icon={showFilterMenu ? faCaretSquareUp : faFilter}
-            />
-            {showFilterMenu
-                ? ` ${messages.MENU_EMPLEADOS_ESCONDER_FILTROS}`
-                : ` ${messages.MENU_EMPLEADOS_MOSTRAR_FILTROS}`}
-        </button>
-    );
 
     return (
         <main className="container__menu-empleados">
             <div className="container__menu-empleados_card">
+                {/* Encabezado */}
                 <div className="container__menu-empleados_card-top">
                     <div>
                         <h1>{messages.MENU_EMPLEADOS_TITLE}</h1>
-                        {renderedFilterToggleButton}
                     </div>
                     <Link
                         className="container__button-aceptar"
@@ -209,21 +197,30 @@ const MenuEmpleados = () => {
                         {messages.REGISTRAR_EMPLEADO}
                     </Link>
                 </div>
-                {renderedFilterMenu}
-                <div>
-                    {empleadosIsLoading && (
-                        <div className="container__loading-msg">
-                            <p>{messages.MENU_EMPLEADOS_CARGANDO}</p>
-                            <FontAwesomeIcon
-                                icon={faSpinner}
-                                spin
-                                size={"2x"}
-                            />
+                {/* Menu como tal */}
+                <div className="container__menu-empleados_card-bottom">
+                    {/* Opciones de filtrado */}
+                    <div className="container__menu-empleados_card-menu">
+                        <div className="container__menu-empleados_card-menu_card">
+                            {renderedCargoFilter}
                         </div>
-                    )}
-                    {empleadoIsSuccess && renderedEmpleados}
+                    </div>
+                    {/* Lista */}
+                    <div className="container__menu-empleados_card-list">
+                        {empleadosIsLoading && (
+                            <div className="container__loading-msg">
+                                <p>{messages.MENU_EMPLEADOS_CARGANDO}</p>
+                                <FontAwesomeIcon
+                                    icon={faSpinner}
+                                    spin
+                                    size={"2x"}
+                                />
+                            </div>
+                        )}
+                        {empleadoIsSuccess && renderedEmpleados}
+                        {renderedLoadMoreBtn}
+                    </div>
                 </div>
-                {renderedLoadMoreBtn}
             </div>
             <ToastContainer className="toast__container" />
         </main>

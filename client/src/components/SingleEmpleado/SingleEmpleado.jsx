@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faTrash,
-    faSquareCaretDown,
+    faCaretDown,
     faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -29,12 +29,6 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
     };
 
     // Renderizaciones -------------------------------------------------------------------------------------
-    const renderedNames = (
-        <h2 className="container__single-empleado_header-nombre">
-            {`${CapitalizeEveryFirstLetter(empleado.nombres)} 
-        ${CapitalizeEveryFirstLetter(empleado.apellidos)}`}
-        </h2>
-    );
 
     const renderedCargos = (
         <p className="container__single-empleado_header-cargo">
@@ -42,6 +36,12 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
         </p>
     );
 
+    const renderedNames = (
+        <h2 className="container__single-empleado_header-nombre">
+            {`${CapitalizeEveryFirstLetter(empleado.nombres)} 
+        ${CapitalizeEveryFirstLetter(empleado.apellidos)}`}
+        </h2>
+    );
     const renderedContratadoState = (
         <p
             className={`container__single-empleado_header-contratado 
@@ -75,70 +75,98 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
 
     const renderedToggleInfoState = (
         <FontAwesomeIcon
-            icon={faSquareCaretDown}
+            icon={faCaretDown}
             flip={showInfo ? "vertical" : false}
+            size="xl"
         />
     );
 
     const renderedRegistrationDate = (
-        <p>{`${messages.MENU_EMPLEADOS_FECHA_CREACION} ${new Date(
-            empleado.createdAt
-        ).toLocaleDateString("es-AR")}`}</p>
+        <div className="container__single-empleado_info-row">
+            <div>
+                <aside>{messages.MENU_EMPLEADOS_FECHA_CREACION}</aside>
+                <p>
+                    {new Date(empleado.createdAt).toLocaleDateString("es-AR")}
+                </p>
+            </div>
+        </div>
     );
 
-    const renderedBirthDate = (
+    const renderedPersonalInfo = (
         <div className="container__single-empleado_info-row">
-            <aside>{messages.MENU_EMPLEADOS_FECHA_NACIMIENTO}</aside>
-            <p className="container__single-empleado_info-row_data">
-                {new Date(empleado.fechaNacimiento).toLocaleDateString("es-AR")}
-            </p>
+            <h3>{messages.MENU_EMPLEADOS_INFO_PERSONAL}</h3>
+            {/* Fecha de nacimiento */}
+            <div>
+                <aside>{messages.MENU_EMPLEADOS_FECHA_NACIMIENTO}</aside>
+                <p className="container__single-empleado_info-row_data">
+                    {new Date(empleado.fechaNacimiento).toLocaleDateString(
+                        "es-AR"
+                    )}
+                </p>
+            </div>
         </div>
     );
 
     const renderedAddress = (
         <div className="container__single-empleado_info-row">
-            <aside>{messages.MENU_EMPLEADOS_DIRECCION}</aside>
-            <p className="container__single-empleado_info-row_data">
-                {`${CapitalizeEveryFirstLetter(empleado.direccion.pais)}, 
-        ${CapitalizeEveryFirstLetter(empleado.direccion.ciudad)}, 
-        ${CapitalizeEveryFirstLetter(empleado.direccion.calle)} 
-        ${empleado.direccion.numero}`}
-            </p>
+            <h3>{messages.MENU_EMPLEADOS_DIRECCION}</h3>
+            {/* Pais */}
+            <div>
+                <aside>{messages.MENU_EMPLEADOS_PAIS}</aside>
+                <p className="container__single-empleado_info-row_data">
+                    {CapitalizeEveryFirstLetter(empleado.direccion.pais)}
+                </p>
+            </div>
+            {/* Ciudad */}
+            <div>
+                <aside>{messages.MENU_EMPLEADOS_CIUDAD}</aside>
+                <p className="container__single-empleado_info-row_data">
+                    {CapitalizeEveryFirstLetter(empleado.direccion.ciudad)}
+                </p>
+            </div>
+            {/* Calle y numero */}
+            <div>
+                <aside>{messages.MENU_EMPLEADOS_CALLE_ALTURA}</aside>
+                <p className="container__single-empleado_info-row_data">
+                    {`${CapitalizeEveryFirstLetter(empleado.direccion.calle)}, 
+                    ${empleado.direccion.numero}`}
+                </p>
+            </div>
         </div>
     );
 
-    const renderedTelephone = (
+    const renderedContacto = (
         <div className="container__single-empleado_info-row">
-            <aside>{messages.MENU_EMPLEADOS_TELEFONO}</aside>
-            <p className="container__single-empleado_info-row_data">
-                {empleado.telefono}
-            </p>
-        </div>
-    );
-
-    const renderedEmail = (
-        <div className="container__single-empleado_info-row">
-            <aside>{messages.MENU_EMPLEADOS_EMAIL}</aside>
-            <a
-                href={`mailto:${empleado.email}`}
-                className="container__single-empleado_info-row_data"
-            >
-                {empleado.email}
-            </a>
+            <h3>{messages.MENU_EMPLEADOS_CONTACTO}</h3>
+            {/* Telefono */}
+            <div>
+                <aside>{messages.MENU_EMPLEADOS_TELEFONO}</aside>
+                <p className="container__single-empleado_info-row_data">
+                    {empleado.telefono}
+                </p>
+            </div>
+            {/* Email */}
+            <div>
+                <aside>{messages.MENU_EMPLEADOS_EMAIL}</aside>
+                <a
+                    href={`mailto:${empleado.email}`}
+                    className="container__single-empleado_info-row_data"
+                >
+                    {empleado.email}
+                </a>
+            </div>
         </div>
     );
 
     const renderedInfo = showInfo && (
         <div className="container__single-empleado_info swing-in">
             <div className="container__single-empleado_info-left">
-                {/* Fecha de nacimiento */}
-                {renderedBirthDate}
+                {/* Informacion personal */}
+                {renderedPersonalInfo}
                 {/* Direccion */}
                 {renderedAddress}
-                {/* Telefono */}
-                {renderedTelephone}
-                {/* Email */}
-                {renderedEmail}
+                {/* Contacto */}
+                {renderedContacto}
             </div>
             <div className="container__single-empleado_info-right">
                 {renderedRegistrationDate}
@@ -148,7 +176,6 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
 
     return (
         <article className="container__single-empleado">
-            <hr />
             {/* Header */}
             <div className="container__single-empleado_header">
                 <button

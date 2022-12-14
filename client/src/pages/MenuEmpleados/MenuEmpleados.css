@@ -1,28 +1,11 @@
 .container__menu-empleados {
-    padding: 23px;
+    padding: 32px;
 }
 
 .container__menu-empleados_card {
-    background: var(--color-menus);
     margin: auto;
-    width: 1000px;
-    border-radius: var(--border-radius-cards);
-    padding: 18px 31px;
-    box-shadow: 0px 0px 10px var(--color-shadow);
-}
-
-.container__menu-empleados_card-menu {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 16px;
-    padding: 16px 24px 16px 24px;
-    border: 2px solid var(--color-text-dark);
-    border-radius: var(--border-radius-cards);
-}
-
-.container__menu-empleados_card-menu_select {
-    margin-left: 24px;
+    min-width: 1000px;
+    max-width: 80%;
 }
 
 .container__menu-empleados_card-top {
@@ -30,7 +13,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 16px;
+    margin-bottom: 32px;
 }
 
 .container__menu-empleados_card-top div {
@@ -50,15 +33,39 @@
     filter: opacity(0.6);
 }
 
-.container__menu-empleados_card-top_filter {
-    border: none;
-    background-color: transparent;
-    color: var(--color-button);
-    margin-left: 16px;
-    font-size: 16px;
-    cursor: pointer;
+.container__menu-empleados_card-bottom {
+    display: flex;
+    flex-direction: row;
 }
 
-.container__menu-empleados_card-top_filter:active {
-    filter: opacity(0.5);
+.container__menu-empleados_card-menu {
+    background: var(--color-menus);
+    border-radius: var(--border-radius-cards);
+    border: 1px var(--color-shadow) solid;
+    min-height: 500px;
+    padding: 24px;
+    flex: 1;
+}
+
+.container__menu-empleados_card-menu_name {
+    font-size: var(--font-size-regular);
+    color: var(--color-hint);
+    margin-bottom: 16px;
+}
+
+.container__menu-empleados_card-menu_propname {
+    font-weight: 400;
+    font-size: var(--font-size-regular);
+    margin-bottom: 8px;
+}
+
+.container__menu-empleados_card-list {
+    max-height: 500px;
+    overflow-y: scroll;
+    padding-left: 32px;
+    flex: 4;
+}
+
+.container__menu-empleados_card-list::-webkit-scrollbar-track {
+    display: none;
 }

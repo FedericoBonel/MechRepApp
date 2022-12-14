@@ -12,12 +12,13 @@
 
 .container__modal h2 {
     font-weight: 400;
-    font-size: 28px;
+    font-size: var(--font-size-bigger);
+    margin-bottom: 8px;
 }
 
 .container__modal p {
     font-weight: 400;
-    font-size: 16px;
+    font-size: var(--font-size-regular);
     line-height: 19px;
     white-space: pre-wrap;
 }

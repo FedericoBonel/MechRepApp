@@ -1,39 +1,95 @@
-.container__single-cargo hr {
-    border: none;
-    height: 2px;
-    background-color: var(--color-text-dark);
-    margin: 17px 0;
+.container__single-cargo {
+    border: 1px var(--color-shadow) solid;
+    background: var(--color-menus);
+    border-radius: var(--border-radius-cards);
+    margin-bottom: 24px;
 }
 
-.container__single-cargo h2 {
+.container__single-cargo_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.container__single-cargo_header-toggleinfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    padding: 24px;
+    cursor: pointer;
+    font-size: var(--font-size-regular);
+    text-align: left;
+    flex: 1;
+}
+
+.container__single-cargo_header-toggleinfo:active {
+    filter: opacity(0.6);
+}
+
+.container__single-cargo_header-toggleinfo svg {
+    margin-left: 32px;
+    color: var(--color-button);
+}
+
+.container__single-cargo_header-nombre {
     font-weight: 400;
-    font-size: 20px;
-    margin: 16px 0;
+    font-size: var(--font-size-big);
 }
 
 .container__single-cargo p {
     font-weight: 400;
-    font-size: 16px;
+    font-size: var(--font-size-regular);
 }
 
-.container__single-cargo_desc {
+.container__single-cargo_info {
     display: flex;
     flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    align-items: flex-start;
+    padding: 0 16px;
+    margin-bottom: 16px;
+    border-top: 1px var(--color-border-dark) solid;
+}
+
+.container__single-cargo_info-left {
+    flex: 2;
+    margin-top: 16px;
+}
+
+.container__single-cargo_info-right {
+    margin-top: 16px;
+    text-align: end;
+}
+
+.container__single-cargo_info-row {
+    margin: 0 0 8px 12px;
+}
+
+.container__single-cargo_info-row h3 {
+    font-weight: 400;
+    font-size: var(--font-size-regular);
+    margin-bottom: 8px;
+}
+
+.container__single-cargo_info-row aside {
+    margin-top: 8px;
+    font-weight: 400;
+    font-size: var(--font-size-smaller);
+    color: var(--color-hint);
+}
+
+.container__single-cargo_info-row p,
+li {
+    font-size: var(--font-size-small);
+    margin-bottom: 8px;
+}
+
+.container__single-cargo_info-row ul {
+    margin-left: 24px;
 }
 
 .container__single-cargo_acciones {
     display: flex;
     flex-direction: row;
-}
-
-.container__single-cargo_acciones-name {
-    margin-right: 16px;
-}
-
-.container__single-cargo_acciones-verb {
-    font-size: 16px;
-    margin: 0 0 8px 16px;
 }
