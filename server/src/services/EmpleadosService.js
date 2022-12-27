@@ -5,10 +5,19 @@ const cargosRepositorio = require("../repositories/CargosRepository");
 const empleadosRepositorio = require("../repositories/EmpleadosRepository");
 const ciudadRepository = require("../repositories/CiudadRepository");
 const reporteMecanicosRepository = require("../repositories/ReporteMecanicosRepository");
+const productividadRepository = require("../repositories/ProductividadRepository");
 
-const validatorMsgs = require("../utils/constants/messages/ServiceErrors");
+const errorMsgs = require("../utils/constants/messages/ServiceErrors");
 
-const { NotFoundError, BadRequestError } = require("../utils/errors");
+const {
+    NotFoundError,
+    BadRequestError,
+    InternalServerError,
+} = require("../utils/errors");
+const {
+    getHoursBetween,
+    resetDaysAndHours,
+} = require("../utils/dates/DateFunctions");
 
 // Definicion de constantes
 const COUNTRY_CODE = process.env.CODIGO_PAIS_VALIDO;
@@ -53,7 +62,7 @@ const getById = async (idEmpleado) => {
 
     if (!savedEmpleado) {
         throw new NotFoundError(
-            `${validatorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
+            `${errorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
         );
     }
 
@@ -75,7 +84,7 @@ const getByCargo = async (cargo, page = 1, limit = 10) => {
     // Verifica si existe el cargo proveido y de ser asi obten su id
     const foundCargo = await cargosRepositorio.getByNombre(cargo);
     if (!foundCargo) {
-        throw new NotFoundError(`${validatorMsgs.CARGO_NOT_VALID}${cargo}`);
+        throw new NotFoundError(`${errorMsgs.CARGO_NOT_VALID}${cargo}`);
     }
 
     const empleados = await empleadosRepositorio.getByCargo(
@@ -114,7 +123,7 @@ const deleteById = async (idEmpleado) => {
 
     if (!deletedEmpleado) {
         throw new NotFoundError(
-            `${validatorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
+            `${errorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
         );
     }
 
@@ -138,11 +147,107 @@ const updateById = async (idEmpleado, updatedEmpleado) => {
 
     if (!savedEmpleado) {
         throw new NotFoundError(
-            `${validatorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
+            `${errorMsgs.EMPLEADOS_NOT_FOUND}${idEmpleado}`
         );
     }
 
     return toEmpleadoBody(savedEmpleado);
+};
+
+/**
+ * Obtiene la productividad de los empleados en el año y mes de la fecha proveída ordenadas de mayor a menor
+ * @param {Date} date fecha que contiene el año y mes por el cual se desea conseguir los puntajes de productividad
+ * @returns Un array con todos los puntajes de productividad por empleado ordenados de mayor a menor
+ */
+const getProductividadByYearAndMonth = async (date, page = 1, limit = 5) => {
+    const skip = (page - 1) * limit;
+    // Verifica si ya ha sido calculado
+    let prod = await productividadRepository.getByYearAndMonth(
+        date,
+        skip,
+        limit
+    );
+    // Si no calculalo y guardalo
+    if (!prod.length) {
+        const closedReportes =
+            await reporteMecanicosRepository.getAllByClosureYearAndMonth(date);
+
+        const prodByEmpleado = getProdByEmpleadoFrom(closedReportes);
+        prod = await productividadRepository.saveAll(prodByEmpleado);
+        prod = prod.slice(skip, skip + limit ? skip + limit : undefined);
+    }
+
+    // Extrae la informacion publica
+    prod.forEach((prodEmpleado) => {
+        prodEmpleado.empleado = toEmpleadoBody(prodEmpleado.empleado);
+    });
+
+    return prod;
+};
+
+/**
+ * Obtiene y calcula los puntajes de productividad de los empleados de todas
+ * las reparaciones completadas de un conjunto de reportes cerrados
+ * @param {[*]} closedReportes Reportes cerrados de los cuales se desea obtener el puntaje
+ * @returns Un array con todos los puntajes de productividad tal y como deben ser persistidos
+ */
+const getProdByEmpleadoFrom = (closedReportes) => {
+    const prodByEmpleado = {};
+
+    // Obten el total de reparaciones completadas por empleado y horas dedicadas
+    for (const reporte of closedReportes) {
+        if (reporte.abierto) {
+            continue;
+        }
+
+        for (const danoReparar of reporte.danosReparar) {
+            const reparacion = danoReparar.reparacionCompletada;
+            if (!reparacion) {
+                throw new InternalServerError(errorMsgs.CORRUPT_DATA);
+            }
+
+            const idMecanico = reparacion.mecanico;
+
+            if (prodByEmpleado[idMecanico]) {
+                // Si el empleado ya ha sido visitado agrega las horas y reparaciones
+                prodByEmpleado[idMecanico].nReparaciones =
+                    prodByEmpleado[idMecanico].nReparaciones + 1;
+                prodByEmpleado[idMecanico].horasTotalesReparaciones =
+                    prodByEmpleado[idMecanico].horasTotalesReparaciones +
+                    getHoursBetween(
+                        reparacion.horaFechaInicio,
+                        reparacion.horaFechaFin
+                    );
+            } else {
+                // Si no agregalo
+                const date = resetDaysAndHours(reporte.fechaCierre);
+
+                prodByEmpleado[idMecanico] = {
+                    empleado: idMecanico,
+                    fecha: date,
+                    nReparaciones: 1,
+                    horasTotalesReparaciones: getHoursBetween(
+                        reparacion.horaFechaInicio,
+                        reparacion.horaFechaFin
+                    ),
+                };
+            }
+        }
+    }
+
+    // Calcula el puntaje final
+    let result = [];
+    for (const idMecanico of Object.keys(prodByEmpleado)) {
+        const calculatedProd = Math.fround(
+            Math.pow(prodByEmpleado[idMecanico].nReparaciones, 2) /
+                (prodByEmpleado[idMecanico].horasTotalesReparaciones || 1)
+        ).toFixed(2);
+
+        prodByEmpleado[idMecanico].puntaje = parseFloat(calculatedProd);
+        result.push(prodByEmpleado[idMecanico]);
+    }
+
+    return result;
 };
 
 /**
@@ -153,7 +258,10 @@ const updateById = async (idEmpleado, updatedEmpleado) => {
 const toEmpleadoBody = (empleadoModel) => {
     // Remove la clave y saca la informacion importante del cargo
     const { password, __v, ...empleadoBody } = empleadoModel;
-    empleadoBody.cargo = empleadoModel.cargo.nombre;
+
+    if (empleadoBody.cargo?.nombre) {
+        empleadoBody.cargo = empleadoModel.cargo.nombre;
+    }
 
     return empleadoBody;
 };
@@ -174,7 +282,7 @@ const toEmpleadoSchema = async (empleadoInput) => {
     );
     if (!foundCargo) {
         throw new NotFoundError(
-            `${validatorMsgs.CARGO_NOT_VALID}${empleadoSchema.cargo}`
+            `${errorMsgs.CARGO_NOT_VALID}${empleadoSchema.cargo}`
         );
     }
 
@@ -183,7 +291,7 @@ const toEmpleadoSchema = async (empleadoInput) => {
     );
     if (foundEmpleado && foundEmpleado._id.toString() !== empleadoSchema._id) {
         throw new BadRequestError(
-            `${validatorMsgs.EMPLEADOS_EMAIL_IN_USE}${empleadoSchema.email}`
+            `${errorMsgs.EMPLEADOS_EMAIL_IN_USE}${empleadoSchema.email}`
         );
     }
 
@@ -193,7 +301,7 @@ const toEmpleadoSchema = async (empleadoInput) => {
     );
     if (!foundCity) {
         throw new NotFoundError(
-            `${validatorMsgs.CIUDAD_NOT_FOUND}${empleadoSchema.direccion.ciudad}`
+            `${errorMsgs.CIUDAD_NOT_FOUND}${empleadoSchema.direccion.ciudad}`
         );
     }
 
@@ -211,4 +319,12 @@ const toEmpleadoSchema = async (empleadoInput) => {
     return empleadoSchema;
 };
 
-module.exports = { save, getAll, getByCargo, deleteById, updateById, getById };
+module.exports = {
+    save,
+    getAll,
+    getByCargo,
+    deleteById,
+    updateById,
+    getById,
+    getProductividadByYearAndMonth,
+};

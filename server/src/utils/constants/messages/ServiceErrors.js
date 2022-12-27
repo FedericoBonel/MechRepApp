@@ -10,6 +10,8 @@ const MESSAGES = {
     // Empleados
     EMPLEADOS_EMAIL_IN_USE: "Ya existe un empleado registrado con el email: ",
     EMPLEADOS_NOT_FOUND: "El empleado proveido no existe en la base de datos: ",
+    CORRUPT_DATA:
+        "Existen daños a ser reparados sin reparaciones en reportes cerrados durante este mes, avise al administrador del sistema para corregirlo",
 };
 
 module.exports = MESSAGES;

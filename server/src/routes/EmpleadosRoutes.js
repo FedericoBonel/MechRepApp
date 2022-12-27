@@ -16,6 +16,14 @@ empleadosRouter
         empleadosController.createEmpleado
     );
 
+// Productividad de empleados
+empleadosRouter
+    .route("/productividad")
+    .get(
+        empleadosValidator.empleadosProductividadValidator,
+        empleadosController.getProductividad
+    );
+
 // Empleado por Id -------------------------------------------------
 empleadosRouter
     .route("/:idEmpleado")
