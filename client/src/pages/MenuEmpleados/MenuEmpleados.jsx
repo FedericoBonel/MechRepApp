@@ -1,28 +1,21 @@
 import { useState } from "react";
-import {
-    useQuery,
-    useInfiniteQuery,
-    useMutation,
-    useQueryClient,
-} from "react-query";
+import { useQueryClient } from "react-query";
 import { ToastContainer, toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faFilter } from "@fortawesome/free-solid-svg-icons";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./MenuEmpleados.css";
 import { SingleEmpleado, Select } from "../../components";
 import { messages } from "../../assets/messages/";
 import apiConstants from "../../api/Constants";
-import empleadosApi from "../../api/EmpleadosAPI";
-import cargosApi from "../../api/CargosAPI";
 import { routes } from "../../routes/";
+import { empleadosData, cargosData } from "../../hooks/data";
 
 /**
  * Componente del menu de gestion de empleados
  */
 const MenuEmpleados = () => {
-    const navigate = useNavigate();
     const queryClient = useQueryClient();
     // Estados ---------------------------------------------------------------
     const [filterCargoSelected, setFilterCargoSelected] = useState("");
@@ -30,38 +23,15 @@ const MenuEmpleados = () => {
     // Interacciones con API -------------------------------------------------
     const {
         isLoading: empleadosIsLoading,
-        isError: empleadosIsError,
-        error: empleadosError,
         data: empleados,
         isSuccess: empleadoIsSuccess,
         fetchNextPage: getNextEmpleadosPage,
         hasNextPage: empleadosHasNextPage,
         isFetchingNextPage: empleadosIsLoadingMore,
-    } = useInfiniteQuery({
-        queryKey: [apiConstants.EMPLEADOS_CACHE, filterCargoSelected],
-        queryFn: ({ pageParam = 1 }) =>
-            empleadosApi.getEmpleados(filterCargoSelected, pageParam),
-        getNextPageParam: (lastPage, allPages) =>
-            // Si la ultima pagina tuvo resultados agrega una pagina mas
-            lastPage.numberHits ? allPages.length + 1 : undefined,
-    });
+    } = empleadosData.useInfiniteEmpleadosData(filterCargoSelected);
 
-    if (empleadosIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                empleadosError.response
-                    ? empleadosError.response.status
-                    : "500"
-            }`
-        );
-    }
-
-    const {
-        mutate: deleteEmpleado,
-        error: empleadoDelError,
-        isError: empleadoDelIsError,
-    } = useMutation(empleadosApi.deleteEmpleado, {
-        onSuccess: (empleadoActualizado) => {
+    const { mutate: deleteEmpleado } = empleadosData.useDeleteEmpleado(
+        (empleadoActualizado) => {
             queryClient.invalidateQueries(apiConstants.EMPLEADOS_CACHE);
 
             if (empleadoActualizado.data) {
@@ -69,34 +39,14 @@ const MenuEmpleados = () => {
                     position: "top-center",
                 });
             }
-        },
-    });
-
-    if (empleadoDelIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                empleadoDelError.response
-                    ? empleadoDelError.response.status
-                    : "500"
-            }`
-        );
-    }
+        }
+    );
 
     const {
         isLoading: cargoIsLoading,
-        isError: cargoIsError,
-        error: cargoError,
         data: cargos,
         isSuccess: cargoIsSuccess,
-    } = useQuery(apiConstants.CARGOS_CACHE, cargosApi.getCargos);
-
-    if (cargoIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                cargoError.response ? cargoError.response.status : "500"
-            }`
-        );
-    }
+    } = cargosData.useCargosData();
 
     // Handlers de eventos ---------------------------------------------------
     const onSelectFilter = (e) => setFilterCargoSelected(e.target.value);

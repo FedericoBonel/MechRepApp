@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useNavigate, Link } from "react-router-dom";
+import { useQueryClient } from "react-query";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,9 +9,7 @@ import { messages } from "../../assets/messages/";
 
 import { empleadosValidator, constantsValidator } from "../../utils/validators";
 import { routes } from "../../routes/";
-import ciudadesAPI from "../../api/CiudadesAPI";
-import cargosAPI from "../../api/CargosAPI";
-import empleadosAPI from "../../api/EmpleadosAPI";
+import { cargosData, ciudadesData, empleadosData } from "../../hooks/data";
 import apiConstants from "../../api/Constants";
 import { Input, Select } from "../../components";
 
@@ -58,7 +56,6 @@ const touchedInitialState = {
  */
 const FormularioEmpleados = () => {
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
     // Estados ----------------------------------------------------------------------------------
 
     // Estado que mantiene seguimiento los datos subidos al formulario
@@ -106,47 +103,25 @@ const FormularioEmpleados = () => {
         isLoading: empleadoIsLoading,
         isError: empleadoIsError,
         error: empleadoError,
-    } = useMutation(empleadosAPI.postEmpleado, {
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: apiConstants.EMPLEADOS_CACHE,
-            });
-            setForm(formInitialState);
-            setTouched(touchedInitialState);
-        },
+    } = empleadosData.useCreateEmpleado(() => {
+        queryClient.invalidateQueries({
+            queryKey: apiConstants.EMPLEADOS_CACHE,
+        });
+        setForm(formInitialState);
+        setTouched(touchedInitialState);
     });
 
     const {
         isLoading: cargoIsLoading,
-        isError: cargoIsError,
-        error: cargoError,
         data: cargos,
         isSuccess: cargoIsSuccess,
-    } = useQuery(apiConstants.CARGOS_CACHE, cargosAPI.getCargos);
-
-    if (cargoIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                cargoError.response ? cargoError.response.status : "500"
-            }`
-        );
-    }
+    } = cargosData.useCargosData();
 
     const {
         isLoading: ciudadIsLoading,
-        isError: ciudadIsError,
-        error: ciudadError,
         data: ciudades,
         isSuccess: ciudadIsSuccess,
-    } = useQuery(apiConstants.CIUDADES_CACHE, ciudadesAPI.getCiudades);
-
-    if (ciudadIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                ciudadError.response ? ciudadError.response.status : "500"
-            }`
-        );
-    }
+    } = ciudadesData.useCiudadesData();
 
     // Handlers de eventos --------------------------------------------------------------------
 
@@ -209,8 +184,6 @@ const FormularioEmpleados = () => {
                     ))}
                 </p>
             );
-        } else {
-            navigate(`${routes.PATH_ERROR}/500`);
         }
     } else if (empleadoIsSuccess) {
         renderedSubmitStatus = (
@@ -231,8 +204,12 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.NOMBRES}
                     name="nombres"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_NOMBRES}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_NOMBRES}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_NOMBRES
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_NOMBRES
+                    }
                     warning={messages.HINT_NOMBRES}
                     value={form.nombres}
                     onBlur={onBlur}
@@ -246,8 +223,12 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.APELLIDOS}
                     name="apellidos"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_APELLIDOS}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_APELLIDOS}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_APELLIDOS
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_APELLIDOS
+                    }
                     warning={messages.HINT_APELLIDOS}
                     value={form.apellidos}
                     onBlur={onBlur}
@@ -391,8 +372,12 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.CLAVE}
                     name="password"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD
+                    }
                     warning={messages.HINT_CLAVE}
                     type={"password"}
                     value={form.password}
@@ -407,8 +392,12 @@ const FormularioEmpleados = () => {
                     setValue={onChange}
                     label={messages.CONFIRMAR_CLAVE}
                     name="passwordConfirmar"
-                    minlength={constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD}
-                    maxlength={constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD}
+                    minlength={
+                        constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD
+                    }
+                    maxlength={
+                        constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD
+                    }
                     warning={messages.HINT_CONFIRMARCLAVE}
                     type={"password"}
                     value={form.passwordConfirmar}

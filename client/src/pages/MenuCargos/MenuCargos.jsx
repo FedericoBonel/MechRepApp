@@ -1,33 +1,18 @@
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 import "./MenuCargos.css";
 import { SingleCargo } from "../../components";
 import { messages } from "../../assets/messages/";
-import apiConstants from "../../api/Constants";
-import cargosApi from "../../api/CargosAPI";
-import { routes } from "../../routes/";
+import { cargosData } from "../../hooks/data";
 
 const MenuCargos = () => {
-    const navigate = useNavigate();
     // Interacciones con API -------------------------------------------------
     const {
         isLoading: cargoIsLoading,
-        isError: cargoIsError,
-        error: cargoError,
         data: cargos,
         isSuccess: cargoIsSuccess,
-    } = useQuery(apiConstants.CARGOS_CACHE, cargosApi.getCargos);
-
-    if (cargoIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                cargoIsError.response ? cargoError.response.status : "500"
-            }`
-        );
-    }
+    } = cargosData.useCargosData();
 
     // Renderizaciones -------------------------------------------------------
     let renderedCargos;
