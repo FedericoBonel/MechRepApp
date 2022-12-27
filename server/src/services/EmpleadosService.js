@@ -168,13 +168,14 @@ const getProductividadByYearAndMonth = async (date, page = 1, limit = 5) => {
         limit
     );
     // Si no calculalo y guardalo
-    if (!prod.length) {
+    if (!prod.length && Number(page) === 1) {
         const closedReportes =
             await reporteMecanicosRepository.getAllByClosureYearAndMonth(date);
 
         const prodByEmpleado = getProdByEmpleadoFrom(closedReportes);
         prod = await productividadRepository.saveAll(prodByEmpleado);
-        prod = prod.slice(skip, skip + limit ? skip + limit : undefined);
+        prod.sort((a, b) => b.puntaje - a.puntaje);
+        prod = prod.slice(0, limit ? limit : undefined);
     }
 
     // Extrae la informacion publica

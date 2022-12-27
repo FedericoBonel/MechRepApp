@@ -4,6 +4,9 @@
 
 // Navbar -----------------------------------------------------------------------------
 export const NAVBAR_LOGO_ALT = "El logo de la aplicación";
+export const NAVBAR_POP_UP_EMPLEADOS_LIST = "Listado de Empleados";
+export const NAVBAR_POP_UP_EMPLEADOS_PROD = "Productividad Mensual";
+export const NAVBAR_POP_UP_EMPLEADOS_CREATE = "Registrar Empleado";
 
 // Select -----------------------------------------------------------------------------
 export const RESETEAR_MENU = "-- Resetear Selección --";
@@ -17,23 +20,41 @@ export const MENU_EMPLEADOS_NO_MAS_EMPLEADOS =
     "Has llegado al fin de la lista de empleados";
 export const MENU_EMPLEADOS_SIGUIENTE_PAG_EMPLEADOS = "Cargar mas empleados";
 export const MENU_EMPLEADOS_CARGANDO = "Cargando los Empleados disponibles... ";
-export const MENU_EMPLEADOS_FECHA_CREACION = "Fecha de Registro";
-export const MENU_EMPLEADOS_FECHA_NACIMIENTO = "Fecha de Nacimiento";
-export const MENU_EMPLEADOS_DIRECCION = "Dirección";
-export const MENU_EMPLEADOS_PAIS = "País";
-export const MENU_EMPLEADOS_CIUDAD = "Ciudad";
-export const MENU_EMPLEADOS_CALLE_ALTURA = "Calle y Altura";
-export const MENU_EMPLEADOS_CONTACTO = "Contacto";
-export const MENU_EMPLEADOS_TELEFONO = "Teléfono";
-export const MENU_EMPLEADOS_EMAIL = "Email";
-export const MENU_EMPLEADOS_CONTRATADO = "CONTRATADO";
-export const MENU_EMPLEADOS_NO_CONTRATADO = "NO CONTRATADO";
 export const MENU_EMPLEADOS_FILTRAR_CARGO = "Cargo: ";
 export const MENU_EMPLEADOS_FILTROS = "Filtros";
 export const MENU_EMPLEADOS_BORRAR_EMPLEADO = "Borrar Empleado";
 export const MENU_EMPLEADOS_NO_PUDO_BORRAR_EMPLEADO =
     "El empleado no se puede eliminar porque ha participado en reportes. Se ha cambiado su estado a no contratado";
-export const MENU_EMPLEADOS_INFO_PERSONAL = "Información Personal";
+
+// Empleado singular en lista ----------------------------------------------------------------
+export const SINGLE_EMPLEADO_FECHA_CREACION = "Fecha de Registro";
+export const SINGLE_EMPLEADO_FECHA_NACIMIENTO = "Fecha de Nacimiento";
+export const SINGLE_EMPLEADO_PROD = "Productividad en el Mes Seleccionado";
+export const SINGLE_EMPLEADO_N_REPARACIONES =
+    "Número de Reparaciones Completadas en el Mes";
+export const SINGLE_EMPLEADO_N_REPARACIONES_HORAS =
+    "Horas totales Usadas en Reparaciones en el Mes";
+export const SINGLE_EMPLEADO_DIRECCION = "Dirección";
+export const SINGLE_EMPLEADO_PAIS = "País";
+export const SINGLE_EMPLEADO_CIUDAD = "Ciudad";
+export const SINGLE_EMPLEADO_CALLE_ALTURA = "Calle y Altura";
+export const SINGLE_EMPLEADO_CONTACTO = "Contacto";
+export const SINGLE_EMPLEADO_TELEFONO = "Teléfono";
+export const SINGLE_EMPLEADO_EMAIL = "Email";
+export const SINGLE_EMPLEADO_CONTRATADO = "CONTRATADO";
+export const SINGLE_EMPLEADO_NO_CONTRATADO = "NO CONTRATADO";
+export const SINGLE_EMPLEADO_INFO_PERSONAL = "Información Personal";
+
+// Productividad de empleados ------------------------------------------------------
+export const PROD_EMPLEADOS_TITLE = "Productividad Mensual de Empleados";
+export const PROD_EMPLEADOS_FILTRAR_FECHA = "Mes y Año:";
+export const PROD_EMPLEADOS_NO_EMPLEADOS =
+    "No se completaron reparaciones en este año y mes... ";
+export const PROD_EMPLEADOS_NO_MAS_EMPLEADOS =
+    "Has llegado al fin de la lista de productividad de empleados";
+export const PROD_EMPLEADOS_SIGUIENTE_PAG_EMPLEADOS = "Cargar más empleados";
+export const PROD_EMPLEADOS_CARGANDO = "Cargando la productividad de los empleados disponibles... ";
+export const PROD_EMPLEADOS_FILTROS = "Filtros";
 
 // Menu Cargos ---------------------------------------------------------------------
 export const CARGOS = "Cargos";
@@ -47,7 +68,7 @@ export const MENU_CARGOS_FILTROS = "Filtros";
 // Formulario nuevo empleado ----------------------------------------------------------
 export const NEW_EMPLEADO = "Nuevo Empleado";
 export const UPDATE_EMPLEADO = "Editar Empleado";
-export const REGISTRAR_EMPLEADO = "Registrar empleado";
+export const REGISTRAR_EMPLEADO = "Registrar Empleado";
 export const NOMBRES = "Nombres";
 export const APELLIDOS = "Apellidos";
 export const EMAIL = "Email";

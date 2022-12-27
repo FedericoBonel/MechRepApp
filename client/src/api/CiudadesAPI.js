@@ -16,7 +16,7 @@ const ciudadesInstanceAPI = axios.create({
  */
 const getCiudades = async () => {
     const response = await ciudadesInstanceAPI.get("/");
-    return await response.data;
+    return response.data;
 };
 
 const ciudadesAPI = {

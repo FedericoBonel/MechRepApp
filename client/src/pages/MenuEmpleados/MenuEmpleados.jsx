@@ -49,7 +49,7 @@ const MenuEmpleados = () => {
     if (empleadosIsError) {
         navigate(
             `${routes.PATH_ERROR}/${
-                empleadosIsError.response
+                empleadosError.response
                     ? empleadosError.response.status
                     : "500"
             }`
@@ -93,7 +93,7 @@ const MenuEmpleados = () => {
     if (cargoIsError) {
         navigate(
             `${routes.PATH_ERROR}/${
-                cargoIsError.response ? cargoError.response.status : "500"
+                cargoError.response ? cargoError.response.status : "500"
             }`
         );
     }
@@ -197,7 +197,7 @@ const MenuEmpleados = () => {
                         {messages.REGISTRAR_EMPLEADO}
                     </Link>
                 </div>
-                {/* Menu como tal */}
+                {/* Contenido */}
                 <div className="container__menu-empleados_card-bottom">
                     {/* Opciones de filtrado */}
                     <div className="container__menu-empleados_card-menu">

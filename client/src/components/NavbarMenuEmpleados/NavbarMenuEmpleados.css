@@ -1,0 +1,21 @@
+.container__empleados-popup {
+    position: absolute;
+    padding: 16px;
+    top: 68px;
+    left: 0;
+    width: 200px;
+    background: var(--color-menus);
+    border-radius: var(--border-radius-cards);
+    border: 1px var(--color-shadow) solid;
+    text-align: left;
+}
+
+.container__empleados-popup li {
+    list-style: none;
+    margin: 0;
+    color: var(--color-selected-button);
+}
+
+.container__empleados-popup a {
+    padding: 8px 0 0 0;
+}

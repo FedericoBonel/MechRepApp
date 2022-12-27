@@ -14,7 +14,7 @@ const cargosInstanceAPI = axios.create({ baseURL: apiConstantes.CARGOS_URL });
  */
 const getCargos = async () => {
     const response = await cargosInstanceAPI.get("/");
-    return await response.data;
+    return response.data;
 };
 
 const cargosAPI = {

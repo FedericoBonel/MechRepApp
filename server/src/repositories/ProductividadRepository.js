@@ -16,7 +16,7 @@ const getByYearAndMonth = async (date, skip, limit) => {
             fecha: normalizedDate,
         })
         .populate("empleado")
-        .sort("puntaje")
+        .sort("-puntaje")
         .skip(skip)
         .limit(limit)
         .lean();
