@@ -1,15 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useInfiniteQuery } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 import "./ProductividadEmpleados.css";
 import { Input, SingleEmpleado, BarChart } from "../../components";
 import { messages } from "../../assets/messages/";
-import { routes } from "../../routes";
-import empleadosAPI from "../../api/EmpleadosAPI";
-import apiConstants from "../../api/Constants";
+import { productividadData } from "../../hooks/data";
 
 const now = new Date();
 const maxDate = new Date(
@@ -22,33 +18,16 @@ const maxDate = new Date(
 const ProductividadEmpleados = () => {
     // Estados -------------------------------------------------------------------------
     const [prodDate, setProdDate] = useState(maxDate);
-    const navigate = useNavigate();
 
     // Interacciones con api -----------------------------------------------------------
     const {
         isLoading: prodIsLoading,
-        isError: prodIsError,
-        error: prodError,
         data: prods,
         isSuccess: prodIsSuccess,
         fetchNextPage: getNextProdPage,
         hasNextPage: prodHasNextPage,
         isFetchingNextPage: prodIsLoadingMore,
-    } = useInfiniteQuery({
-        queryKey: [apiConstants.PRODUCTIVIDAD, prodDate],
-        queryFn: ({ pageParam = 1 }) =>
-            empleadosAPI.getProductividad(prodDate.toISOString(), pageParam),
-        getNextPageParam: (lastPage, allPages) =>
-            lastPage.numberHits ? allPages.length + 1 : undefined,
-    });
-
-    if (prodIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                prodError.response ? prodError.response.status : "500"
-            }`
-        );
-    }
+    } = productividadData.useInfiniteProductividadData(prodDate);
 
     // Handlers de eventos -------------------------------------------------------------
     const onSelectDateFilter = (date) =>
