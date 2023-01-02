@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { ToastContainer, toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -30,17 +30,30 @@ const MenuEmpleados = () => {
         isFetchingNextPage: empleadosIsLoadingMore,
     } = empleadosData.useInfiniteEmpleadosData(filterCargoSelected);
 
-    const { mutate: deleteEmpleado } = empleadosData.useDeleteEmpleado(
-        (empleadoActualizado) => {
+    const { mutate: deleteEmpleado, isLoading: deleteEmpleadoIsLoading } =
+        empleadosData.useDeleteEmpleado((empleadoActualizado) => {
             queryClient.invalidateQueries(apiConstants.EMPLEADOS_CACHE);
+            toast.dismiss();
 
             if (empleadoActualizado.data) {
                 toast.warning(messages.MENU_EMPLEADOS_NO_PUDO_BORRAR_EMPLEADO, {
                     position: "top-center",
                 });
             }
+        });
+
+    useEffect(() => {
+        if (deleteEmpleadoIsLoading) {
+            toast(messages.MENU_EMPLEADOS_BORRANDO_EMPLEADO, {
+                position: "bottom-left",
+                autoClose: false,
+                closeOnClick: false,
+                draggable: false,
+                closeButton: false,
+                icon: () => <FontAwesomeIcon icon={faSpinner} spin />,
+            });
         }
-    );
+    }, [deleteEmpleadoIsLoading]);
 
     const {
         isLoading: cargoIsLoading,
@@ -62,6 +75,7 @@ const MenuEmpleados = () => {
                         key={empleado._id}
                         empleado={empleado}
                         onDelete={() => deleteEmpleado(empleado._id)}
+                        isDeleting={deleteEmpleadoIsLoading}
                     />
                 ))
             );

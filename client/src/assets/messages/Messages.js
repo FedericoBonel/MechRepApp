@@ -25,6 +25,7 @@ export const MENU_EMPLEADOS_FILTROS = "Filtros";
 export const MENU_EMPLEADOS_BORRAR_EMPLEADO = "Borrar Empleado";
 export const MENU_EMPLEADOS_NO_PUDO_BORRAR_EMPLEADO =
     "El empleado no se puede eliminar porque ha participado en reportes. Se ha cambiado su estado a no contratado";
+export const MENU_EMPLEADOS_BORRANDO_EMPLEADO = "Eliminando empleado...";
 
 // Empleado singular en lista ----------------------------------------------------------------
 export const SINGLE_EMPLEADO_FECHA_CREACION = "Fecha de Registro";
@@ -53,7 +54,8 @@ export const PROD_EMPLEADOS_NO_EMPLEADOS =
 export const PROD_EMPLEADOS_NO_MAS_EMPLEADOS =
     "Has llegado al fin de la lista de productividad de empleados";
 export const PROD_EMPLEADOS_SIGUIENTE_PAG_EMPLEADOS = "Cargar más empleados";
-export const PROD_EMPLEADOS_CARGANDO = "Cargando la productividad de los empleados disponibles... ";
+export const PROD_EMPLEADOS_CARGANDO =
+    "Cargando la productividad de los empleados disponibles... ";
 export const PROD_EMPLEADOS_FILTROS = "Filtros";
 
 // Menu Cargos ---------------------------------------------------------------------

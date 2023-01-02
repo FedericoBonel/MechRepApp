@@ -139,6 +139,11 @@ a {
     filter: none;
 }
 
+.container__single-empleado_info-deletebtn:disabled {
+    pointer-events: none;
+    filter: opacity(0.3) contrast(0);
+}
+
 .container__single-empleado_info-updatebtn {
     margin-left: 8px;
     margin-right: 16px;

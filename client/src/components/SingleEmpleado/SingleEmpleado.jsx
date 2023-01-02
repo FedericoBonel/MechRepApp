@@ -17,7 +17,12 @@ import { CapitalizeEveryFirstLetter } from "../../utils/Strings";
 /**
  * Componente de un item de empleado de la lista de empleados
  */
-const SingleEmpleado = ({ empleado, onDelete, isProductividad }) => {
+const SingleEmpleado = ({
+    empleado,
+    onDelete,
+    isProductividad,
+    isDeleting,
+}) => {
     // Estados ---------------------------------------------------------------------------------------------
     const [showInfo, setShowInfo] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -64,6 +69,7 @@ const SingleEmpleado = ({ empleado, onDelete, isProductividad }) => {
             className="container__single-empleado_info-deletebtn"
             aria-label={messages.MENU_EMPLEADOS_BORRAR_EMPLEADO}
             onClick={() => setShowConfirmModal(true)}
+            disabled={isDeleting}
         >
             {<FontAwesomeIcon icon={faTrash} />}
         </button>
