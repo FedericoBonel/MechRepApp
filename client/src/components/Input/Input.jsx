@@ -4,7 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./Input.css";
 import { constantsValidator } from "../../utils/validators/";
 
-const DATE_FORMAT = "dd/MM/yyyy";
+const DATE_FORMAT_DAYS = "dd/MM/yyyy";
+const DATE_FORMAT_MONTH = "MM/yyyy";
 
 /**
  * Componente personalizado
@@ -32,7 +33,27 @@ const Input = ({
     onBlur,
 }) => {
     let input;
-    if (type !== "date") {
+    if (type === "date" || type === "month") {
+        input = (
+            <DatePicker
+                className={`container__input-field${
+                    showWarning ? "_warning" : ""
+                }`}
+                selected={value}
+                onChange={setValue}
+                minDate={minDate}
+                maxDate={maxDate}
+                placeholderText={placeholder}
+                showYearDropdown
+                dropdownMode="select"
+                onBlur={onBlur}
+                dateFormat={
+                    type === "month" ? DATE_FORMAT_MONTH : DATE_FORMAT_DAYS
+                }
+                showMonthYearPicker={type === "month"}
+            />
+        );
+    } else {
         input = (
             <input
                 className={`container__input-field${
@@ -56,23 +77,6 @@ const Input = ({
                 max={max}
                 onBlur={onBlur}
                 checked={type === "checkbox" ? value : undefined}
-            />
-        );
-    } else {
-        input = (
-            <DatePicker
-                className={`container__input-field${
-                    showWarning ? "_warning" : ""
-                }`}
-                selected={value}
-                onChange={setValue}
-                minDate={minDate}
-                maxDate={maxDate}
-                placeholderText={placeholder}
-                showYearDropdown
-                dropdownMode="select"
-                onBlur={onBlur}
-                dateFormat={DATE_FORMAT}
             />
         );
     }

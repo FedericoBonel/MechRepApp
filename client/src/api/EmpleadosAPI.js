@@ -21,7 +21,7 @@ const getEmpleados = async (cargo = "", page = 1, limit = 10) => {
     const config = { params: { cargo, page, limit } };
 
     const response = await empleadosInstanceAPI.get("/", config);
-    return await response.data;
+    return response.data;
 };
 
 /**
@@ -40,7 +40,7 @@ const getEmpleadoById = async (idEmpleado) => {
  * @returns La respuesta del servidor con el nuevo empleado
  */
 const postEmpleado = async (newEmpleado) => {
-    return await empleadosInstanceAPI.post("/", newEmpleado);
+    return empleadosInstanceAPI.post("/", newEmpleado);
 };
 
 /**
@@ -51,7 +51,7 @@ const postEmpleado = async (newEmpleado) => {
  */
 const patchEmpleado = async (idEmpleado, updatedEmpleado) => {
     const response = await empleadosInstanceAPI.patch(`/${idEmpleado}`, updatedEmpleado);
-    return await response.data;
+    return response.data;
 };
 
 /**
@@ -65,12 +65,27 @@ const deleteEmpleado = async (idEmpleado) => {
     return deletedRes.data;
 };
 
+/**
+ * Busca todos los puntajes de productividad desde el back end
+ * @param yearMonth Año y mes de los puntajes a ser buscados, debe estar en formato ISO 8601
+ * @param page Parametro opcional, de ser proporcionado se traera solo una pagina especifica de todos los puntajes
+ * @param limit Parametro opcional, de ser proporcionado se traera solo esta cantidad especfica de puntajes desde la base de datos
+ * @returns La respuesta del servidor con todos los puntajes
+ */
+const getProductividad = async (yearMonth, page = 1, limit = 5) => {
+    const config = { params: { yearMonth, page, limit } };
+
+    const response = await empleadosInstanceAPI.get("/productividad", config);
+    return response.data;
+};
+
 const empleadosAPI = {
     getEmpleados,
     getEmpleadoById,
     postEmpleado,
     deleteEmpleado,
-    patchEmpleado
+    patchEmpleado,
+    getProductividad
 };
 
 export default empleadosAPI;

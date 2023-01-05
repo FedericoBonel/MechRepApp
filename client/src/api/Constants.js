@@ -12,6 +12,7 @@ const CARGOS_URL = `${API_BASE_URL}/cargos`;
 const CIUDADES_CACHE = "ciudades";
 const CARGOS_CACHE = "cargos";
 const EMPLEADOS_CACHE = "empleados";
+const PRODUCTIVIDAD = "productividad";
 
 const VALORES = {
     CIUDADES_URL,
@@ -19,7 +20,8 @@ const VALORES = {
     CARGOS_URL,
     CIUDADES_CACHE,
     CARGOS_CACHE,
-    EMPLEADOS_CACHE
+    EMPLEADOS_CACHE,
+    PRODUCTIVIDAD
 };
 
 export default VALORES;

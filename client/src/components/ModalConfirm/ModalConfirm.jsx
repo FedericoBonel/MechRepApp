@@ -28,7 +28,7 @@ const ModalConfirm = ({
         } else {
             document.body.style.overflow = "auto"
         }
-        // Reactivalo cuando cierres el componente
+        // Reactivalo cuando desmontes el componente
         return () => (document.body.style.overflow = "auto");
     }, [show]);
 

@@ -10,6 +10,7 @@ import {
     FormularioEmpleados,
     MenuCargos,
     FormularioEdicionEmpleados,
+    ProductividadEmpleados,
 } from "./pages";
 import { PrivateLayout } from "./layouts";
 import { routes } from "./routes/";
@@ -27,6 +28,11 @@ function App() {
                         <Route
                             path={routes.CREATE}
                             element={<FormularioEmpleados />}
+                        />
+                        {/* Productividad de empleados */}
+                        <Route
+                            path={`${routes.PATH_PROD_EMPLEADOS}`}
+                            element={<ProductividadEmpleados />}
                         />
                         {/* Edicion de empleados */}
                         <Route

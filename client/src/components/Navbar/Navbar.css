@@ -16,6 +16,7 @@
 
 .container__navbar-links {
     height: 100%;
+    position: relative;
     list-style: none;
     display: flex;
     flex-direction: row;
@@ -29,20 +30,33 @@
     align-items: center;
 }
 
-.container__navbar-links li:active {
+.container__navbar-links a:active,
+.container__navbar-links button:active {
     filter: opacity(0.6);
 }
 
-.container__navbar-links a {
+.container__navbar-links a,
+.container__navbar-links button {
     text-decoration: none;
     height: 100%;
     padding: 18px;
     display: flex;
     align-items: center;
 }
+
+.container__navbar-links svg {
+    margin-left: 8px;
+}
+
+.container__navbar-links_button {
+    border: inherit;
+    background: transparent;
+    cursor: pointer;
+}
+
 .container__navbar-links_selected {
     color: var(--color-selected-button);
-    border-bottom: 2px solid var(--color-selected-button);
+    border-bottom: 3px solid var(--color-selected-button);
 }
 
 .container__navbar-links_unselected {

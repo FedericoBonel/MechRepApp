@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { Link, useParams } from "react-router-dom";
+import { useQueryClient } from "react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner, faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -9,10 +9,8 @@ import "./FormularioEdicionEmpleados.css";
 import { messages } from "../../assets/messages/";
 import { empleadosValidator, constantsValidator } from "../../utils/validators";
 import { routes } from "../../routes/";
-import ciudadesAPI from "../../api/CiudadesAPI";
-import cargosAPI from "../../api/CargosAPI";
-import empleadosAPI from "../../api/EmpleadosAPI";
 import apiConstants from "../../api/Constants";
+import { cargosData, ciudadesData, empleadosData } from "../../hooks/data";
 import { Input, Select } from "../../components";
 
 const PAIS = process.env.PAIS_VALIDO || "Argentina";
@@ -58,7 +56,6 @@ const touchedInitialState = {
  */
 const FormularioEdicionEmpleados = () => {
     const queryClient = useQueryClient();
-    const navigate = useNavigate();
     const { idEmpleado } = useParams();
     // Estados ----------------------------------------------------------------------------------
     const [form, setForm] = useState(formInitialState);
@@ -68,7 +65,7 @@ const FormularioEdicionEmpleados = () => {
 
     // Validaciones ----------------------------------------------------------------------
 
-    // Valida el formulario devolviendo un objeto que contiene 
+    // Valida el formulario devolviendo un objeto que contiene
     // los campos y un booleano de error
     const validateForm = (form) => ({
         nombres: empleadosValidator.isNombres(form.nombres),
@@ -105,89 +102,46 @@ const FormularioEdicionEmpleados = () => {
         isLoading: empleadoIsLoading,
         isError: empleadoIsError,
         error: empleadoError,
-    } = useMutation(
-        ({ idEmpleado, updatedEmpleado }) =>
-            empleadosAPI.patchEmpleado(idEmpleado, updatedEmpleado),
-        {
-            onSuccess: () => {
-                setForm(formInitialState);
-                setTouched(touchedInitialState);
-                queryClient.invalidateQueries({
-                    queryKey: apiConstants.EMPLEADOS_CACHE,
-                });
-            },
-        }
-    );
+    } = empleadosData.useUpdateEmpleado(idEmpleado, () => {
+        setForm(formInitialState);
+        setTouched(touchedInitialState);
+        queryClient.invalidateQueries({
+            queryKey: apiConstants.EMPLEADOS_CACHE,
+        });
+    });
 
     const {
         isLoading: savedEmplIsLoading,
-        isError: savedEmplIsError,
-        error: savedEmplError,
         isSuccess: savedEmplIsSuccess,
-    } = useQuery(
-        [apiConstants.EMPLEADOS_CACHE, idEmpleado],
-        () => empleadosAPI.getEmpleadoById(idEmpleado),
-        {
-            onSuccess: ({ data }) =>
-                setForm({
-                    nombres: data.nombres,
-                    apellidos: data.apellidos,
-                    fechaNacimiento: new Date(data.fechaNacimiento),
-                    email: data.email,
-                    pais: PAIS,
-                    ciudad: data.direccion.ciudad,
-                    calle: data.direccion.calle,
-                    numero: data.direccion.numero,
-                    cargo: data.cargo,
-                    password: "",
-                    passwordConfirmar: "",
-                    telefono: data.telefono,
-                    contratado: data.contratado,
-                }),
-            refetchInterval: Infinity,
-            refetchOnWindowFocus: false,
-        }
+    } = empleadosData.useEmpleadoByIdData(idEmpleado, ({ data }) =>
+        setForm({
+            nombres: data.nombres,
+            apellidos: data.apellidos,
+            fechaNacimiento: new Date(data.fechaNacimiento),
+            email: data.email,
+            pais: PAIS,
+            ciudad: data.direccion.ciudad,
+            calle: data.direccion.calle,
+            numero: data.direccion.numero,
+            cargo: data.cargo,
+            password: "",
+            passwordConfirmar: "",
+            telefono: data.telefono,
+            contratado: data.contratado,
+        })
     );
-
-    if (savedEmplIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                savedEmplError.response ? savedEmplError.response.status : "500"
-            }`
-        );
-    }
 
     const {
         isLoading: cargoIsLoading,
-        isError: cargoIsError,
-        error: cargoError,
         data: cargos,
         isSuccess: cargoIsSuccess,
-    } = useQuery(apiConstants.CARGOS_CACHE, cargosAPI.getCargos);
-
-    if (cargoIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                cargoError.response ? cargoError.response.status : "500"
-            }`
-        );
-    }
+    } = cargosData.useCargosData();
 
     const {
         isLoading: ciudadIsLoading,
-        isError: ciudadIsError,
-        error: ciudadError,
         data: ciudades,
         isSuccess: ciudadIsSuccess,
-    } = useQuery(apiConstants.CIUDADES_CACHE, ciudadesAPI.getCiudades);
-
-    if (ciudadIsError) {
-        navigate(
-            `${routes.PATH_ERROR}/${
-                ciudadError.response ? ciudadError.response.status : "500"
-            }`
-        );
-    }
+    } = ciudadesData.useCiudadesData();
 
     // Handlers de eventos --------------------------------------------------------------------
 
@@ -218,23 +172,20 @@ const FormularioEdicionEmpleados = () => {
         }
 
         updateEmpleado({
-            idEmpleado,
-            updatedEmpleado: {
-                nombres: form.nombres,
-                apellidos: form.apellidos,
-                email: form.email,
-                fechaNacimiento: form.fechaNacimiento.toISOString(),
-                direccion: {
-                    pais: form.pais,
-                    ciudad: form.ciudad,
-                    calle: form.calle,
-                    numero: form.numero,
-                },
-                cargo: form.cargo,
-                password: form.password.length ? form.password : undefined,
-                telefono: form.telefono,
-                contratado: form.contratado,
+            nombres: form.nombres,
+            apellidos: form.apellidos,
+            email: form.email,
+            fechaNacimiento: form.fechaNacimiento.toISOString(),
+            direccion: {
+                pais: form.pais,
+                ciudad: form.ciudad,
+                calle: form.calle,
+                numero: form.numero,
             },
+            cargo: form.cargo,
+            password: form.password.length ? form.password : undefined,
+            telefono: form.telefono,
+            contratado: form.contratado,
         });
     };
 
@@ -254,8 +205,6 @@ const FormularioEdicionEmpleados = () => {
                     )}
                 </p>
             );
-        } else {
-            navigate(`${routes.PATH_ERROR}/500`);
         }
     } else if (empleadoIsSuccess) {
         renderedSubmitStatus = (

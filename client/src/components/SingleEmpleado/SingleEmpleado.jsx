@@ -17,7 +17,12 @@ import { CapitalizeEveryFirstLetter } from "../../utils/Strings";
 /**
  * Componente de un item de empleado de la lista de empleados
  */
-const SingleEmpleado = ({ empleado, onDelete }) => {
+const SingleEmpleado = ({
+    empleado,
+    onDelete,
+    isProductividad,
+    isDeleting,
+}) => {
     // Estados ---------------------------------------------------------------------------------------------
     const [showInfo, setShowInfo] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -30,10 +35,13 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
 
     // Renderizaciones -------------------------------------------------------------------------------------
 
-    const renderedCargos = (
-        <p className="container__single-empleado_header-cargo">
-            {empleado.cargo.toUpperCase()}
-        </p>
+    const renderedCargos = !isProductividad && (
+        <>
+            <span> - </span>
+            <p className="container__single-empleado_header-cargo">
+                {empleado.cargo.toUpperCase()}
+            </p>
+        </>
     );
 
     const renderedNames = (
@@ -42,22 +50,26 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
         ${CapitalizeEveryFirstLetter(empleado.apellidos)}`}
         </h2>
     );
-    const renderedContratadoState = (
+
+    const renderedContratadoStateOrProd = isProductividad ? (
+        <p>{empleado.puntaje}</p>
+    ) : (
         <p
             className={`container__single-empleado_header-contratado 
             container__single-empleado_header-contratado_${empleado.contratado}`}
         >
             {empleado.contratado
-                ? messages.MENU_EMPLEADOS_CONTRATADO
-                : messages.MENU_EMPLEADOS_NO_CONTRATADO}
+                ? messages.SINGLE_EMPLEADO_CONTRATADO
+                : messages.SINGLE_EMPLEADO_NO_CONTRATADO}
         </p>
     );
 
-    const renderedDeleteButton = (
+    const renderedDeleteButton = !isProductividad && (
         <button
             className="container__single-empleado_info-deletebtn"
             aria-label={messages.MENU_EMPLEADOS_BORRAR_EMPLEADO}
             onClick={() => setShowConfirmModal(true)}
+            disabled={isDeleting}
         >
             {<FontAwesomeIcon icon={faTrash} />}
         </button>
@@ -84,7 +96,7 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
     const renderedRegistrationDate = (
         <div className="container__single-empleado_info-row">
             <div>
-                <aside>{messages.MENU_EMPLEADOS_FECHA_CREACION}</aside>
+                <aside>{messages.SINGLE_EMPLEADO_FECHA_CREACION}</aside>
                 <p>
                     {new Date(empleado.createdAt).toLocaleDateString("es-AR")}
                 </p>
@@ -92,12 +104,26 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
         </div>
     );
 
+    const productividad = isProductividad && (
+        <div className="container__single-empleado_info-row">
+            <h3>{messages.SINGLE_EMPLEADO_PROD}</h3>
+            <div>
+                <aside>{messages.SINGLE_EMPLEADO_N_REPARACIONES}</aside>
+                <p>{empleado.nReparaciones}</p>
+            </div>
+            <div>
+                <aside>{messages.SINGLE_EMPLEADO_N_REPARACIONES_HORAS}</aside>
+                <p>{empleado.horasTotalesReparaciones} hs</p>
+            </div>
+        </div>
+    );
+
     const renderedPersonalInfo = (
         <div className="container__single-empleado_info-row">
-            <h3>{messages.MENU_EMPLEADOS_INFO_PERSONAL}</h3>
+            <h3>{messages.SINGLE_EMPLEADO_INFO_PERSONAL}</h3>
             {/* Fecha de nacimiento */}
             <div>
-                <aside>{messages.MENU_EMPLEADOS_FECHA_NACIMIENTO}</aside>
+                <aside>{messages.SINGLE_EMPLEADO_FECHA_NACIMIENTO}</aside>
                 <p className="container__single-empleado_info-row_data">
                     {new Date(empleado.fechaNacimiento).toLocaleDateString(
                         "es-AR"
@@ -109,24 +135,24 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
 
     const renderedAddress = (
         <div className="container__single-empleado_info-row">
-            <h3>{messages.MENU_EMPLEADOS_DIRECCION}</h3>
+            <h3>{messages.SINGLE_EMPLEADO_DIRECCION}</h3>
             {/* Pais */}
             <div>
-                <aside>{messages.MENU_EMPLEADOS_PAIS}</aside>
+                <aside>{messages.SINGLE_EMPLEADO_PAIS}</aside>
                 <p className="container__single-empleado_info-row_data">
                     {CapitalizeEveryFirstLetter(empleado.direccion.pais)}
                 </p>
             </div>
             {/* Ciudad */}
             <div>
-                <aside>{messages.MENU_EMPLEADOS_CIUDAD}</aside>
+                <aside>{messages.SINGLE_EMPLEADO_CIUDAD}</aside>
                 <p className="container__single-empleado_info-row_data">
                     {CapitalizeEveryFirstLetter(empleado.direccion.ciudad)}
                 </p>
             </div>
             {/* Calle y numero */}
             <div>
-                <aside>{messages.MENU_EMPLEADOS_CALLE_ALTURA}</aside>
+                <aside>{messages.SINGLE_EMPLEADO_CALLE_ALTURA}</aside>
                 <p className="container__single-empleado_info-row_data">
                     {`${CapitalizeEveryFirstLetter(empleado.direccion.calle)}, 
                     ${empleado.direccion.numero}`}
@@ -137,17 +163,17 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
 
     const renderedContacto = (
         <div className="container__single-empleado_info-row">
-            <h3>{messages.MENU_EMPLEADOS_CONTACTO}</h3>
+            <h3>{messages.SINGLE_EMPLEADO_CONTACTO}</h3>
             {/* Telefono */}
             <div>
-                <aside>{messages.MENU_EMPLEADOS_TELEFONO}</aside>
+                <aside>{messages.SINGLE_EMPLEADO_TELEFONO}</aside>
                 <p className="container__single-empleado_info-row_data">
                     {empleado.telefono}
                 </p>
             </div>
             {/* Email */}
             <div>
-                <aside>{messages.MENU_EMPLEADOS_EMAIL}</aside>
+                <aside>{messages.SINGLE_EMPLEADO_EMAIL}</aside>
                 <a
                     href={`mailto:${empleado.email}`}
                     className="container__single-empleado_info-row_data"
@@ -170,6 +196,7 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
             </div>
             <div className="container__single-empleado_info-right">
                 {renderedRegistrationDate}
+                {productividad}
             </div>
         </div>
     );
@@ -183,10 +210,10 @@ const SingleEmpleado = ({ empleado, onDelete }) => {
                     onClick={() => setShowInfo((prevInfo) => !prevInfo)}
                 >
                     <div>
-                        {renderedNames} <span> - </span> {renderedCargos}
+                        {renderedNames} {renderedCargos}
                     </div>
                     <div>
-                        {renderedContratadoState}
+                        {renderedContratadoStateOrProd}
                         {renderedToggleInfoState}
                     </div>
                 </button>

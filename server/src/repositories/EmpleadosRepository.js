@@ -1,4 +1,4 @@
-// Imports
+// Importaciones
 const { empleadoModel } = require("../models/Empleado");
 
 /**

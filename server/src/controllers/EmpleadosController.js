@@ -60,10 +60,24 @@ const updateEmpleado = async (req, res) => {
     res.status(StatusCodes.OK).json(new SuccessResBody(savedEmpleado));
 };
 
+/** Controlador que maneja los requests que piden la productividad de los empleados */
+const getProductividad = async (req, res) => {
+    const { yearMonth, page, limit } = req.query;
+
+    const savedProd = await empleadosService.getProductividadByYearAndMonth(
+        new Date(yearMonth),
+        page,
+        limit
+    );
+
+    res.status(StatusCodes.OK).json(new SuccessResBody(savedProd));
+};
+
 module.exports = {
     createEmpleado,
     getEmpleados,
     getEmpleadoById,
     deleteEmpleado,
     updateEmpleado,
+    getProductividad,
 };
