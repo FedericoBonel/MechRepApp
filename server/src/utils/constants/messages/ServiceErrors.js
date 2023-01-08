@@ -12,6 +12,9 @@ const MESSAGES = {
     EMPLEADOS_NOT_FOUND: "El empleado proveido no existe en la base de datos: ",
     CORRUPT_DATA:
         "Existen daños a ser reparados sin reparaciones en reportes cerrados durante este mes, avise al administrador del sistema para corregirlo",
+    // Taller
+    TALLER_EXISTS: "El taller ya esta registrado en el sistema",
+    TALLER_NOT_FOUND: "El taller no existe en la base de datos",
 };
 
 module.exports = MESSAGES;

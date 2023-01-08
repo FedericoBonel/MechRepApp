@@ -10,6 +10,7 @@ const connectToDB = require("./src/database/Connect");
 const empleadosRouter = require("./src/routes/EmpleadosRoutes");
 const cargosRouter = require("./src/routes/CargosRoutes");
 const ciudadesRouter = require("./src/routes/CiudadesRoutes");
+const tallerRouter = require("./src/routes/TallerRoutes");
 
 const pathNotFound = require("./src/middleware/PathNotFound");
 const errorHandler = require("./src/middleware/ErrorHandler");
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use(`${API_BASE_URL}/empleados`, empleadosRouter);
 app.use(`${API_BASE_URL}/cargos`, cargosRouter);
 app.use(`${API_BASE_URL}/ciudades`, ciudadesRouter);
+app.use(`${API_BASE_URL}/taller`, tallerRouter);
 
 // Control de errores
 app.use(pathNotFound);
