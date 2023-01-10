@@ -79,7 +79,7 @@ const SingleEmpleado = ({
         <Link
             to={`${routes.PATH_UPDATE_EMPLEADO}/${empleado._id}`}
             className="container__single-empleado_info-updatebtn"
-            aria-label={messages.MENU_EMPLEADOS_BORRAR_EMPLEADO}
+            aria-label={messages.MENU_EMPLEADOS_EDITAR_EMPLEADO}
         >
             {<FontAwesomeIcon icon={faEdit} />}
         </Link>

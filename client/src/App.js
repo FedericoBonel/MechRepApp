@@ -11,38 +11,48 @@ import {
     MenuCargos,
     FormularioEdicionEmpleados,
     ProductividadEmpleados,
+    TallerFormulario,
 } from "./pages";
-import { PrivateLayout } from "./layouts";
+import { PrivateLayout, NeedsTallerLayout, NoTallerLayout } from "./layouts";
 import { routes } from "./routes/";
 
-function App() {
+const App = () => {
     return (
         <Router>
             <Routes>
                 {/* Solo accesible a usuarios logeados */}
                 <Route path="/" element={<PrivateLayout />}>
-                    <Route path={`${routes.EMPLEADOS}`}>
-                        {/* Lista de empleados */}
-                        <Route index element={<MenuEmpleados />} />
-                        {/* Creacion de empleados */}
-                        <Route
-                            path={routes.CREATE}
-                            element={<FormularioEmpleados />}
-                        />
-                        {/* Productividad de empleados */}
-                        <Route
-                            path={`${routes.PATH_PROD_EMPLEADOS}`}
-                            element={<ProductividadEmpleados />}
-                        />
-                        {/* Edicion de empleados */}
-                        <Route
-                            path={`${routes.UPDATE}/:idEmpleado`}
-                            element={<FormularioEdicionEmpleados />}
-                        />
+                    <Route path="/" element={<NeedsTallerLayout />}>
+                        <Route path={`${routes.EMPLEADOS}`}>
+                            {/* Lista de empleados */}
+                            <Route index element={<MenuEmpleados />} />
+                            {/* Creacion de empleados */}
+                            <Route
+                                path={routes.CREATE}
+                                element={<FormularioEmpleados />}
+                            />
+                            {/* Productividad de empleados */}
+                            <Route
+                                path={`${routes.PATH_PROD_EMPLEADOS}`}
+                                element={<ProductividadEmpleados />}
+                            />
+                            {/* Edicion de empleados */}
+                            <Route
+                                path={`${routes.UPDATE}/:idEmpleado`}
+                                element={<FormularioEdicionEmpleados />}
+                            />
+                        </Route>
+                        <Route path={`${routes.CARGOS}`}>
+                            {/* Lista de cargos */}
+                            <Route index element={<MenuCargos />} />
+                        </Route>
                     </Route>
-                    <Route path={`${routes.CARGOS}`}>
-                        {/* Lista de cargos */}
-                        <Route index element={<MenuCargos />} />
+                    {/* Registro del taller */}
+                    <Route path="/" element={<NoTallerLayout />}>
+                        <Route
+                            path={routes.PATH_CREATE_TALLER}
+                            element={<TallerFormulario />}
+                        />
                     </Route>
                 </Route>
                 {/* Errores */}
@@ -57,6 +67,6 @@ function App() {
             </Routes>
         </Router>
     );
-}
+};
 
 export default App;

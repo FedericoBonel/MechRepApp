@@ -7,7 +7,12 @@ import { faSpinner, faClose } from "@fortawesome/free-solid-svg-icons";
 import "./FormularioEdicionEmpleados.css";
 
 import { messages } from "../../assets/messages/";
-import { empleadosValidator, constantsValidator } from "../../utils/validators";
+import {
+    empleadosValidator,
+    direccionValidator,
+    contactoValidator,
+    constantsValidator,
+} from "../../utils/validators";
 import { routes } from "../../routes/";
 import apiConstants from "../../api/Constants";
 import { cargosData, ciudadesData, empleadosData } from "../../hooks/data";
@@ -70,16 +75,16 @@ const FormularioEdicionEmpleados = () => {
     const validateForm = (form) => ({
         nombres: empleadosValidator.isNombres(form.nombres),
         apellidos: empleadosValidator.isApellidos(form.apellidos),
-        email: empleadosValidator.isEmail(form.email),
+        email: contactoValidator.isEmail(form.email),
         ciudad: form.ciudad !== "",
-        calle: empleadosValidator.isCalle(form.calle),
-        numero: empleadosValidator.isNumero(form.numero),
+        calle: direccionValidator.isCalle(form.calle),
+        numero: direccionValidator.isNumero(form.numero),
         cargo: form.cargo !== "",
         password:
             form.password === "" ||
             empleadosValidator.isPassword(form.password),
         passwordConfirmar: form.password === form.passwordConfirmar,
-        telefono: empleadosValidator.isTelefono(form.telefono),
+        telefono: contactoValidator.isTelefono(form.telefono),
         fechaNacimiento: empleadosValidator.isFechaNacimiento(
             form.fechaNacimiento
         ),
@@ -110,26 +115,24 @@ const FormularioEdicionEmpleados = () => {
         });
     });
 
-    const {
-        isLoading: savedEmplIsLoading,
-        isSuccess: savedEmplIsSuccess,
-    } = empleadosData.useEmpleadoByIdData(idEmpleado, ({ data }) =>
-        setForm({
-            nombres: data.nombres,
-            apellidos: data.apellidos,
-            fechaNacimiento: new Date(data.fechaNacimiento),
-            email: data.email,
-            pais: PAIS,
-            ciudad: data.direccion.ciudad,
-            calle: data.direccion.calle,
-            numero: data.direccion.numero,
-            cargo: data.cargo,
-            password: "",
-            passwordConfirmar: "",
-            telefono: data.telefono,
-            contratado: data.contratado,
-        })
-    );
+    const { isLoading: savedEmplIsLoading, isSuccess: savedEmplIsSuccess } =
+        empleadosData.useEmpleadoByIdData(idEmpleado, ({ data }) =>
+            setForm({
+                nombres: data.nombres,
+                apellidos: data.apellidos,
+                fechaNacimiento: new Date(data.fechaNacimiento),
+                email: data.email,
+                pais: PAIS,
+                ciudad: data.direccion.ciudad,
+                calle: data.direccion.calle,
+                numero: data.direccion.numero,
+                cargo: data.cargo,
+                password: "",
+                passwordConfirmar: "",
+                telefono: data.telefono,
+                contratado: data.contratado,
+            })
+        );
 
     const {
         isLoading: cargoIsLoading,
@@ -209,7 +212,7 @@ const FormularioEdicionEmpleados = () => {
     } else if (empleadoIsSuccess) {
         renderedSubmitStatus = (
             <p className="container__form-success">
-                {messages.EMPLEADO_GUARDADO_EXITO}
+                {messages.EMPLEADOS_FORM_EMPLEADO_GUARDADO_EXITO}
             </p>
         );
     }
@@ -220,10 +223,10 @@ const FormularioEdicionEmpleados = () => {
                 {/* Nombres */}
                 <Input
                     required={true}
-                    placeholder={messages.PLACEHOLDER_NOMBRES}
+                    placeholder={messages.EMPLEADOS_FORM_PLACEHOLDER_NOMBRES}
                     showWarning={shouldShowWarning("nombres")}
                     setValue={onChange}
-                    label={messages.NOMBRES}
+                    label={messages.EMPLEADOS_FORM_NOMBRES}
                     name="nombres"
                     minlength={
                         constantsValidator.VALORES.EMPL_MIN_LENGTH_NOMBRES
@@ -231,7 +234,7 @@ const FormularioEdicionEmpleados = () => {
                     maxlength={
                         constantsValidator.VALORES.EMPL_MAX_LENGTH_NOMBRES
                     }
-                    warning={messages.HINT_NOMBRES}
+                    warning={messages.EMPLEADOS_FORM_HINT_NOMBRES}
                     value={form.nombres}
                     onBlur={onBlur}
                     className="container_formedit-empleados_card-row_left"
@@ -239,10 +242,10 @@ const FormularioEdicionEmpleados = () => {
                 {/* Apellidos */}
                 <Input
                     required={true}
-                    placeholder={messages.PLACEHOLDER_APELLIDOS}
+                    placeholder={messages.EMPLEADOS_FORM_PLACEHOLDER_APELLIDOS}
                     showWarning={shouldShowWarning("apellidos")}
                     setValue={onChange}
-                    label={messages.APELLIDOS}
+                    label={messages.EMPLEADOS_FORM_APELLIDOS}
                     name="apellidos"
                     minlength={
                         constantsValidator.VALORES.EMPL_MIN_LENGTH_APELLIDOS
@@ -250,7 +253,7 @@ const FormularioEdicionEmpleados = () => {
                     maxlength={
                         constantsValidator.VALORES.EMPL_MAX_LENGTH_APELLIDOS
                     }
-                    warning={messages.HINT_APELLIDOS}
+                    warning={messages.EMPLEADOS_FORM_HINT_APELLIDOS}
                     value={form.apellidos}
                     onBlur={onBlur}
                     className="container_formedit-empleados_card-row_right"
@@ -258,7 +261,7 @@ const FormularioEdicionEmpleados = () => {
             </div>
             {/* Fecha de nacimiento */}
             <Input
-                label={messages.FECHA_NACIMIENTO}
+                label={messages.EMPLEADOS_FORM_FECHA_NACIMIENTO}
                 value={form.fechaNacimiento}
                 setValue={(date) => {
                     setForm((prevForm) => ({
@@ -267,8 +270,8 @@ const FormularioEdicionEmpleados = () => {
                     }));
                 }}
                 maxDate={limitFechaNacimiento}
-                warning={messages.HINT_FECHA_NACIMIENTO}
-                placeholder={`${messages.PLACEHOLDER_FECHA_NACIMIENTO}`}
+                warning={messages.EMPLEADOS_FORM_HINT_FECHA_NACIMIENTO}
+                placeholder={`${messages.EMPLEADOS_FORM_PLACEHOLDER_FECHA_NACIMIENTO}`}
                 type="date"
                 required={true}
             />
@@ -372,12 +375,14 @@ const FormularioEdicionEmpleados = () => {
                     <Select
                         required={true}
                         showWarning={shouldShowWarning("cargo")}
-                        label={messages.CARGO}
+                        label={messages.EMPLEADOS_FORM_CARGO}
                         options={cargos.data.map((cargo) => cargo.nombre)}
                         value={form.cargo}
                         setValue={onChange}
                         name="cargo"
-                        noSelection={messages.SELECT_CARGO_DEFAULT}
+                        noSelection={
+                            messages.EMPLEADOS_FORM_SELECT_CARGO_DEFAULT
+                        }
                         onBlur={onBlur}
                         className="container_formedit-empleados_card-row_left"
                     />
@@ -385,21 +390,21 @@ const FormularioEdicionEmpleados = () => {
                 {/* Contratado */}
                 <Input
                     setValue={onChange}
-                    label={messages.CONTRATADO}
+                    label={messages.EMPLEADOS_FORM_CONTRATADO}
                     name="contratado"
                     type="checkbox"
                     value={form.contratado}
-                    hint={messages.HINT_CONTRATADO}
+                    hint={messages.EMPLEADOS_FORM_HINT_CONTRATADO}
                     className="container_formedit-empleados_card-row_right"
                 />
             </div>
             <div className="container__formedit-empleados_card-row">
                 {/* Clave */}
                 <Input
-                    placeholder={messages.PLACEHOLDER_CLAVE}
+                    placeholder={messages.EMPLEADOS_FORM_PLACEHOLDER_CLAVE}
                     showWarning={shouldShowWarning("password")}
                     setValue={onChange}
-                    label={messages.CLAVE}
+                    label={messages.EMPLEADOS_FORM_CLAVE}
                     name="password"
                     minlength={
                         constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD
@@ -407,7 +412,7 @@ const FormularioEdicionEmpleados = () => {
                     maxlength={
                         constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD
                     }
-                    warning={messages.HINT_CLAVE}
+                    warning={messages.EMPLEADOS_FORM_HINT_CLAVE}
                     type={"password"}
                     value={form.password}
                     onBlur={onBlur}
@@ -415,10 +420,10 @@ const FormularioEdicionEmpleados = () => {
                 />
                 {/* Confirmacion de clave */}
                 <Input
-                    placeholder={messages.PLACEHOLDER_CLAVE}
+                    placeholder={messages.EMPLEADOS_FORM_PLACEHOLDER_CLAVE}
                     showWarning={shouldShowWarning("passwordConfirmar")}
                     setValue={onChange}
-                    label={messages.CONFIRMAR_CLAVE}
+                    label={messages.EMPLEADOS_FORM_CONFIRMAR_CLAVE}
                     name="passwordConfirmar"
                     minlength={
                         constantsValidator.VALORES.EMPL_MIN_LENGTH_PASSWORD
@@ -426,7 +431,7 @@ const FormularioEdicionEmpleados = () => {
                     maxlength={
                         constantsValidator.VALORES.EMPL_MAX_LENGTH_PASSWORD
                     }
-                    warning={messages.HINT_CONFIRMARCLAVE}
+                    warning={messages.EMPLEADOS_FORM_HINT_CONFIRMARCLAVE}
                     type={"password"}
                     value={form.passwordConfirmar}
                     onBlur={onBlur}
@@ -460,7 +465,7 @@ const FormularioEdicionEmpleados = () => {
         <main className="container__formedit-empleados">
             <div className="container__formedit-empleados_card">
                 <div className="container__formedit-empleados_card-header">
-                    <h1>{messages.UPDATE_EMPLEADO}</h1>
+                    <h1>{messages.EMPLEADO_FORM_UPDATE_EMPLEADO}</h1>
                     <Link to={routes.PATH_EMPLEADOS}>
                         <FontAwesomeIcon icon={faClose} size="xl" />
                     </Link>
@@ -471,7 +476,11 @@ const FormularioEdicionEmpleados = () => {
                     renderedForm}
                 {(savedEmplIsLoading || cargoIsLoading || ciudadIsLoading) && (
                     <div className="container__loading-msg">
-                        <p>{messages.CARGANDO_CARGOS_CIUDADES_EMPL}</p>
+                        <p>
+                            {
+                                messages.EMPLEADOS_FORM_CARGANDO_CARGOS_CIUDADES_EMPL
+                            }
+                        </p>
                         <FontAwesomeIcon icon={faSpinner} spin size="2x" />
                     </div>
                 )}

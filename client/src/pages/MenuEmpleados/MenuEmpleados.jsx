@@ -133,7 +133,9 @@ const MenuEmpleados = () => {
                         value={filterCargoSelected}
                         setValue={onSelectFilter}
                         options={cargosOptions}
-                        noSelection={messages.SELECT_CARGO_DEFAULT}
+                        noSelection={
+                            messages.EMPLEADOS_FORM_SELECT_CARGO_DEFAULT
+                        }
                     />
                 </div>
             </>
@@ -158,7 +160,7 @@ const MenuEmpleados = () => {
                         className="container__button-aceptar"
                         to={routes.PATH_CREATE_EMPLEADO}
                     >
-                        {messages.REGISTRAR_EMPLEADO}
+                        {messages.MENU_EMPLEADOS_REGISTRAR_EMPLEADO}
                     </Link>
                 </div>
                 {/* Contenido */}
